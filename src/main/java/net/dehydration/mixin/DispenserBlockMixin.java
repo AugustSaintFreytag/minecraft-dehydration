@@ -57,7 +57,7 @@ public abstract class DispenserBlockMixin extends BlockWithEntity {
 					world.syncWorldEvent(WorldEvents.DISPENSER_DISPENSES, pos, 0);
 					info.cancel();
 				}
-			} else if (itemStack.getItem().equals(ModItems.PURIFIED_BUCKET)) {
+			} else if (itemStack.getItem().equals(ModItems.PURIFIED_WATER_BUCKET)) {
 				if (blockState.isOf(ModBlocks.CAMPFIRE_CAULDRON_BLOCK)
 						&& blockState.get(CampfireCauldronBlock.LEVEL) < 4) {
 					itemStack.decrement(1);

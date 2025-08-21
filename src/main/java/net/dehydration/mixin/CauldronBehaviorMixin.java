@@ -16,6 +16,6 @@ public interface CauldronBehaviorMixin {
 
 	@Inject(method = "registerBucketBehavior", at = @At("TAIL"))
 	private static void registerBucketBehaviorMixin(Map<Item, CauldronBehavior> behavior, CallbackInfo info) {
-		behavior.put(ModItems.PURIFIED_BUCKET, CauldronBehavior.FILL_WITH_WATER);
+		behavior.put(ModItems.PURIFIED_WATER_BUCKET, CauldronBehavior.FILL_WITH_WATER);
 	}
 }

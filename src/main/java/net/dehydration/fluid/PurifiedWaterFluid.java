@@ -44,7 +44,7 @@ public abstract class PurifiedWaterFluid extends FlowableFluid {
 
 	@Override
 	public Item getBucketItem() {
-		return ModItems.PURIFIED_BUCKET;
+		return ModItems.PURIFIED_WATER_BUCKET;
 	}
 
 	@Override

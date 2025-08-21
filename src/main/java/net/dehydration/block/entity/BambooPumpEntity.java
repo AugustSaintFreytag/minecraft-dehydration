@@ -73,7 +73,7 @@ public class BambooPumpEntity extends BlockEntity implements Inventory {
 			if (itemStack.isOf(Items.BUCKET)) {
 				if (pumpCount > 3) {
 					if (!this.world.isClient())
-						setStack(0, new ItemStack(ModItems.PURIFIED_BUCKET));
+						setStack(0, new ItemStack(ModItems.PURIFIED_WATER_BUCKET));
 					pumpCount = 0;
 					cooldown = ModConfig.CONFIG.pumpCooldown;
 				}

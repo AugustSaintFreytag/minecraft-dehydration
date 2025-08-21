@@ -60,7 +60,7 @@ public interface CopperCauldronBehavior {
 	ActionResult interact(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack stack);
 
 	static void registerBehavior() {
-		EMPTY_COPPER_CAULDRON_BEHAVIOR.put(ModItems.PURIFIED_BUCKET, (state, world, pos, player, hand, stack) -> {
+		EMPTY_COPPER_CAULDRON_BEHAVIOR.put(ModItems.PURIFIED_WATER_BUCKET, (state, world, pos, player, hand, stack) -> {
 			return fillCauldron(world, pos, player, hand, stack,
 					(BlockState) ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState()
 							.with(CopperLeveledCauldronBlock.LEVEL, 3),
@@ -182,7 +182,7 @@ public interface CopperCauldronBehavior {
 		registerBucketBehavior(POWDER_SNOW_COPPER_CAULDRON_BEHAVIOR);
 
 		PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.BUCKET, (state, world, pos, player, hand, stack) -> {
-			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(ModItems.PURIFIED_BUCKET),
+			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(ModItems.PURIFIED_WATER_BUCKET),
 					(statex) -> {
 						return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
 					}, SoundEvents.ITEM_BUCKET_FILL);

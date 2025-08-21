@@ -30,9 +30,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
-public class PurifiedBucket extends Item implements FluidModificationItem {
+public class PurifiedWaterBucket extends Item implements FluidModificationItem {
 
-	public PurifiedBucket(Settings settings) {
+	public PurifiedWaterBucket(Settings settings) {
 		super(settings);
 	}
 
@@ -40,20 +40,24 @@ public class PurifiedBucket extends Item implements FluidModificationItem {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		BlockHitResult blockHitResult = BucketItem.raycast(world, user, RaycastContext.FluidHandling.NONE);
+
 		if (blockHitResult.getType() == HitResult.Type.MISS) {
 			return TypedActionResult.pass(itemStack);
 		}
+
 		if (blockHitResult.getType() == HitResult.Type.BLOCK) {
 			BlockPos blockPos3;
 			BlockPos blockPos = blockHitResult.getBlockPos();
 			Direction direction = blockHitResult.getSide();
 			BlockPos blockPos2 = blockPos.offset(direction);
+
 			if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos2, direction, itemStack)) {
 				return TypedActionResult.fail(itemStack);
 			}
 
 			BlockState blockState = world.getBlockState(blockPos);
 			blockPos3 = blockState.getBlock() instanceof FluidFillable ? blockPos : blockPos2;
+
 			if (this.placeFluid(user, world, blockPos3, blockHitResult)) {
 				this.onEmptied(user, world, itemStack, blockPos3);
 				if (user instanceof ServerPlayerEntity) {
@@ -62,8 +66,10 @@ public class PurifiedBucket extends Item implements FluidModificationItem {
 				user.incrementStat(Stats.USED.getOrCreateStat(this));
 				return TypedActionResult.success(BucketItem.getEmptiedStack(itemStack, user), world.isClient());
 			}
+
 			return TypedActionResult.fail(itemStack);
 		}
+
 		return TypedActionResult.pass(itemStack);
 	}
 
@@ -86,6 +92,7 @@ public class PurifiedBucket extends Item implements FluidModificationItem {
 			return hitResult != null
 					&& this.placeFluid(player, world, hitResult.getBlockPos().offset(hitResult.getSide()), null);
 		}
+
 		if (world.getDimension().ultrawarm()) {
 			int i = pos.getX();
 			int j = pos.getY();
@@ -98,6 +105,7 @@ public class PurifiedBucket extends Item implements FluidModificationItem {
 			}
 			return true;
 		}
+
 		if (block instanceof FluidFillable) {
 			((FluidFillable) ((Object) block)).tryFillWithFluid(world, pos, blockState,
 					((FlowableFluid) ModFluids.PURIFIED_WATER).getStill(false));
@@ -105,14 +113,17 @@ public class PurifiedBucket extends Item implements FluidModificationItem {
 			this.playEmptyingSound(player, world, pos);
 			return true;
 		}
+
 		if (!world.isClient() && bl && !blockState.isLiquid()) {
 			world.breakBlock(pos, true);
 		}
+
 		if (world.setBlockState(pos, ModFluids.PURIFIED_WATER.getDefaultState().getBlockState(),
 				Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD) || blockState.getFluidState().isStill()) {
 			this.playEmptyingSound(player, world, pos);
 			return true;
 		}
+
 		return false;
 	}
 

@@ -55,15 +55,15 @@ public abstract class PotionItemMixin extends Item {
 	@Inject(method = "finishUsing", at = @At(value = "HEAD"))
 	public void finishUsingMixin(ItemStack stack, World world, LivingEntity user,
 			CallbackInfoReturnable<ItemStack> info) {
-		if (!(user instanceof PlayerEntity player)) {
+		if (!(user instanceof PlayerEntity player) || world.isClient()) {
 			return;
 		}
 
-		if (world.isClient() || !PotionItemUtil.isContaminatedPotionItemStack(stack)) {
-			return;
-		}
+		HydrationUtil.addHydrationToPlayerForItemStack(player, stack);
 
-		HydrationUtil.addDefaultThirstEffectToPlayer(player);
+		if (PotionItemUtil.isContaminatedPotionItemStack(stack)) {
+			HydrationUtil.addDefaultThirstEffectToPlayer(player);
+		}
 	}
 
 	@Override

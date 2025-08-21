@@ -117,7 +117,7 @@ public class DehydrationConfig implements ConfigData {
 
 	@ConfigEntry.Category("production_settings")
 	@Comment("Defines the time in ticks it takes to boil water in a cauldron.")
-	public int waterBoilingTime = 160;
+	public int waterBoilingTime = 400;
 
 	@ConfigEntry.Category("production_settings")
 	@Comment("Defines the time in ticks before a pump can produce water again.")
