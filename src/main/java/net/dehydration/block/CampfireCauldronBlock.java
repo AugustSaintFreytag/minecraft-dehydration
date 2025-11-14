@@ -157,8 +157,7 @@ public class CampfireCauldronBlock extends Block implements BlockEntityProvider 
 					ItemStack newItemStack;
 
 					if (this.isPurifiedWater(world, pos)) {
-						newItemStack = PotionUtil.setPotion(new ItemStack(Items.POTION),
-								ModItems.PURIFIED_WATER);
+						newItemStack = PotionUtil.setPotion(new ItemStack(Items.POTION), ModItems.PURIFIED_WATER);
 					} else {
 						newItemStack = PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.WATER);
 					}
@@ -181,8 +180,14 @@ public class CampfireCauldronBlock extends Block implements BlockEntityProvider 
 				|| PotionUtil.getPotion(itemStack) == ModItems.PURIFIED_WATER)) {
 			if (i < MAX_LEVEL && !world.isClient()) {
 				if (!player.isCreative()) {
-					var newItemStack = new ItemStack(Items.GLASS_BOTTLE);
-					player.setStackInHand(hand, newItemStack);
+					if (itemStack.getCount() == 1) {
+						var newItemStack = new ItemStack(Items.GLASS_BOTTLE);
+						player.setStackInHand(hand, newItemStack);
+					} else if (itemStack.getCount() > 1) {
+						itemStack.decrement(1);
+						var newItemStack = new ItemStack(Items.GLASS_BOTTLE);
+						player.dropItem(newItemStack, false);
+					}
 				}
 
 				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS,
