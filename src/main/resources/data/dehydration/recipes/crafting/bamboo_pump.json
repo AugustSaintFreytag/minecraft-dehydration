@@ -1,19 +1,19 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " d ",
-        " de",
-        "fof"
+        "ddl",
+        "dd ",
+        "sos"
     ],
     "key": {
         "d": {
             "item": "minecraft:bamboo"
         },
-        "e": {
+        "l": {
             "item": "minecraft:lever"
         },
-        "f": {
-            "item": "minecraft:smooth_stone_slab"
+        "s": {
+            "item": "minecraft:smooth_stone"
         },
         "o": {
             "item": "minecraft:bucket"
