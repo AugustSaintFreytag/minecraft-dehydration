@@ -5,8 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(name = "dehydration")
-@Config.Gui.Background("minecraft:textures/block/stone.png")
+@Config(name = "dehydration") @Config.Gui.Background("minecraft:textures/block/stone.png")
 public class DehydrationConfig implements ConfigData {
 
 	// Player
@@ -72,7 +71,7 @@ public class DehydrationConfig implements ConfigData {
 	@ConfigEntry.Category("flask_settings")
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 20)
 	@Comment("Defines the hydration value of one charge of a filled water flask.")
-	public int flaskHydrationValue = 12;
+	public int flaskHydrationValue = 10;
 
 	// Food & Drinks
 
