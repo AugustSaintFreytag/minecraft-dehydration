@@ -68,9 +68,7 @@ public class ThirstTooltipComponent implements TooltipComponent {
 		// Draw single half thirst element
 		if (thirstQuench % 2 != 0) {
 			context.drawTexture(ModRendering.THIRST_ICON, x + thirstQuench / 2 * 9 - 1, y, 0, 0, 9, 9, 256, 256); // Background
-			context.drawTexture(ModRendering.THIRST_ICON, x + thirstQuench / 2 * 9 - 1, y, this.quality * 18 + 9, 9, 9,
-					9,
-					256, 256);
+			context.drawTexture(ModRendering.THIRST_ICON, x + thirstQuench / 2 * 9 - 1, y, this.quality * 18 + 9, 9, 9, 9, 256, 256);
 		}
 	}
 

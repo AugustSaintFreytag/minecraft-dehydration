@@ -1,9 +1,9 @@
 package net.dehydration.api;
 
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 
-public class FlaskItem extends LeatherFlask {
-    public FlaskItem(int waterAddition, Settings settings) {
-        super(waterAddition, settings);
-    }
+public class FlaskItem extends LeatherFlaskItem {
+	public FlaskItem(int waterAddition, Settings settings) {
+		super(waterAddition, settings);
+	}
 }

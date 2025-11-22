@@ -48,8 +48,7 @@ public abstract class AbstractCopperCauldronBlock extends Block {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack itemStack = player.getStackInHand(hand);
 		CopperCauldronBehavior cauldronBehavior = (CopperCauldronBehavior) this.behaviorMap.get(itemStack.getItem());
 		return cauldronBehavior.interact(state, world, pos, player, hand, itemStack);
@@ -103,8 +102,8 @@ public abstract class AbstractCopperCauldronBlock extends Block {
 	static {
 		OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(),
 				VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
-						createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
-						createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAYCAST_SHAPE),
+						createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
+						RAYCAST_SHAPE),
 				BooleanBiFunction.ONLY_FIRST);
 	}
 }

@@ -16,8 +16,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 
-@Environment(EnvType.CLIENT)
-@Mixin(ClientPlayerEntity.class)
+@Environment(EnvType.CLIENT) @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
 
 	public ClientPlayerEntityMixin(ClientWorld world, GameProfile profile) {

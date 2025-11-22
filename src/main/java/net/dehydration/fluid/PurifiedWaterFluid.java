@@ -52,18 +52,16 @@ public abstract class PurifiedWaterFluid extends FlowableFluid {
 		if (!state.isStill() && !state.get(FALLING).booleanValue()) {
 			if (random.nextInt(64) == 0) {
 				world.playSound((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5,
-						SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS,
-						random.nextFloat() * 0.25f + 0.75f, random.nextFloat() + 0.5f, false);
+						SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25f + 0.75f,
+						random.nextFloat() + 0.5f, false);
 			}
 		} else if (random.nextInt(10) == 0) {
 			world.addParticle(ParticleTypes.UNDERWATER, (double) pos.getX() + random.nextDouble(),
-					(double) pos.getY() + random.nextDouble(), (double) pos.getZ() + random.nextDouble(), 0.0, 0.0,
-					0.0);
+					(double) pos.getY() + random.nextDouble(), (double) pos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
 		}
 	}
 
-	@Override
-	@Nullable
+	@Override @Nullable
 	public ParticleEffect getParticle() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
@@ -81,8 +79,7 @@ public abstract class PurifiedWaterFluid extends FlowableFluid {
 
 	@Override
 	public BlockState toBlockState(FluidState state) {
-		return (BlockState) ModBlocks.PURIFIED_WATER.getDefaultState().with(FluidBlock.LEVEL,
-				PurifiedWaterFluid.getBlockStateLevel(state));
+		return (BlockState) ModBlocks.PURIFIED_WATER.getDefaultState().with(FluidBlock.LEVEL, PurifiedWaterFluid.getBlockStateLevel(state));
 	}
 
 	@Override
@@ -101,8 +98,7 @@ public abstract class PurifiedWaterFluid extends FlowableFluid {
 	}
 
 	@Override
-	public boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid,
-			Direction direction) {
+	public boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
 		return fluid.isIn(FluidTags.WATER);
 	}
 

@@ -1,7 +1,7 @@
 package net.dehydration.mod;
 
 import net.dehydration.fluid.PurifiedWaterFluid;
-import net.dehydration.item.PurifiedWaterBucket;
+import net.dehydration.item.PurifiedWaterBucketItem;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -18,8 +18,7 @@ public class ModFluids {
 
 	public static final FlowableFluid PURIFIED_FLOWING_WATER = register("dehydration:purified_flowing_water",
 			new PurifiedWaterFluid.Flowing());
-	public static final FlowableFluid PURIFIED_WATER = register("dehydration:purified_water",
-			new PurifiedWaterFluid.Still());
+	public static final FlowableFluid PURIFIED_WATER = register("dehydration:purified_water", new PurifiedWaterFluid.Still());
 
 	public static void init() {
 		initFluidStorage();
@@ -27,11 +26,10 @@ public class ModFluids {
 
 	private static void initFluidStorage() {
 		FluidStorage.GENERAL_COMBINED_PROVIDER.register(context -> {
-			if (context.getItemVariant().getItem() instanceof PurifiedWaterBucket bucketItem) {
+			if (context.getItemVariant().getItem() instanceof PurifiedWaterBucketItem bucketItem) {
 				Fluid bucketFluid = ModFluids.PURIFIED_WATER;
 				if (bucketFluid != null && bucketFluid.getBucketItem() == bucketItem) {
-					return new FullItemFluidStorage(context, Items.BUCKET, FluidVariant.of(bucketFluid),
-							FluidConstants.BUCKET);
+					return new FullItemFluidStorage(context, Items.BUCKET, FluidVariant.of(bucketFluid), FluidConstants.BUCKET);
 				}
 			}
 			return null;

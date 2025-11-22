@@ -20,17 +20,16 @@ public class ModCommands {
 				return serverCommandSource.hasPermissionLevel(3);
 			})).then((CommandManager.argument("targets", EntityArgumentType.players())
 					.then(CommandManager.literal("true").executes((commandContext) -> {
-						return executeThirstCommand(commandContext.getSource(),
-								EntityArgumentType.getPlayers(commandContext, "targets"), true);
+						return executeThirstCommand(commandContext.getSource(), EntityArgumentType.getPlayers(commandContext, "targets"),
+								true);
 					})).then(CommandManager.literal("false").executes((commandContext) -> {
-						return executeThirstCommand(commandContext.getSource(),
-								EntityArgumentType.getPlayers(commandContext, "targets"), false);
+						return executeThirstCommand(commandContext.getSource(), EntityArgumentType.getPlayers(commandContext, "targets"),
+								false);
 					})))));
 		});
 	}
 
-	private static int executeThirstCommand(ServerCommandSource source, Collection<ServerPlayerEntity> targets,
-			boolean setThirst) {
+	private static int executeThirstCommand(ServerCommandSource source, Collection<ServerPlayerEntity> targets, boolean setThirst) {
 		Iterator<ServerPlayerEntity> var3 = targets.iterator();
 
 		while (var3.hasNext()) {

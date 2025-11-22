@@ -31,17 +31,15 @@ public class PlayerManagerMixin {
 	}
 
 	@Inject(method = "respawnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;onPlayerRespawned(Lnet/minecraft/server/network/ServerPlayerEntity;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void respawnPlayerMixinAtInvoke(ServerPlayerEntity player, boolean alive,
-			CallbackInfoReturnable<ServerPlayerEntity> info, BlockPos blockPos, float f, boolean bl,
-			ServerWorld serverWorld,
-			Optional<Vec3d> optional2, ServerWorld serverWorld2, ServerPlayerEntity serverPlayerEntity) {
+	private void respawnPlayerMixinAtInvoke(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> info,
+			BlockPos blockPos, float f, boolean bl, ServerWorld serverWorld, Optional<Vec3d> optional2, ServerWorld serverWorld2,
+			ServerPlayerEntity serverPlayerEntity) {
 		var hydrationManager = ((HydrationManagerAccess) player).getHydrationManager();
 		HydrationServerPacket.writeS2CExcludedSyncPacket(serverPlayerEntity, hydrationManager.hasThirst());
 	}
 
 	@Inject(method = "respawnPlayer", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void respawnPlayerMixinAtReturn(ServerPlayerEntity player, boolean alive,
-			CallbackInfoReturnable<ServerPlayerEntity> info) {
+	private void respawnPlayerMixinAtReturn(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> info) {
 		var serverPlayerEntity = info.getReturnValue();
 		var hydrationManager = ((HydrationManagerAccess) serverPlayerEntity).getHydrationManager();
 		var defaultThirst = ModConfig.CONFIG.hydrationOnRespawn;

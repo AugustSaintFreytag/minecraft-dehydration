@@ -1,37 +1,39 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "net.dehydration.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "plugin": "net.dehydration.ModMixinPlugin",
-  "mixins": [
-	"compat.autohud.AutoHudDehydrationCompatMixin",
-	"compat.farmersdelight.FarmersDelightConsumableItemMixin",
-	"MilkBucketItemMixin",
-    "accessor.CampfireBlockEntityAccessor",
-    "BootstrapMixin",
-    "BrewingRecipeRegistryMixin",
-    "CampfireBlockEntityMixin",
-    "CampfireBlockMixin",
-    "CauldronBehaviorMixin",
-    "DispenserBlockMixin",
-    "GlassBottleItemMixin",
-    "ItemMixin",
-    "PlayerEntityMixin",
-    "PlayerManagerMixin",
-    "PlayerScreenHandlerMixin",
-    "PotionItemMixin",
-    "PotionUtilMixin",
-    "ServerPlayerEntityMixin",
-    "StatusEffectMixin",
-    "TooltipComponentMixin",
-    "WaterFluidMixin"
-  ],
-  "client": [
-    "client.InGameHudMixin",
-    "client.ClientPlayerEntityMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "net.dehydration.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "net.dehydration.ModMixinPlugin",
+	"mixins": [
+		"accessor.CampfireBlockEntityAccessor",
+		"accessor.BucketItemAccessor",
+		"compat.autohud.AutoHudDehydrationCompatMixin",
+		"compat.farmersdelight.FarmersDelightConsumableItemMixin",
+		"MilkBucketItemMixin",
+		"BootstrapMixin",
+		"BrewingRecipeRegistryMixin",
+		"CampfireBlockEntityMixin",
+		"CampfireBlockMixin",
+		"CauldronBehaviorMixin",
+		"DispenserBlockMixin",
+		"GlassBottleItemMixin",
+		"ItemMixin",
+		"PlayerEntityMixin",
+		"PlayerManagerMixin",
+		"PlayerScreenHandlerMixin",
+		"PotionItemMixin",
+		"PotionUtilMixin",
+		"ServerPlayerEntityMixin",
+		"StatusEffectMixin",
+		"TooltipComponentMixin",
+		"WaterFluidMixin",
+		"BucketItemMixin"
+	],
+	"client": [
+		"client.InGameHudMixin",
+		"client.ClientPlayerEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

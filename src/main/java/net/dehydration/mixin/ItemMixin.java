@@ -21,13 +21,16 @@ import net.minecraft.world.World;
 public class ItemMixin {
 
 	@Inject(method = "finishUsing", at = @At(value = "HEAD"))
-	private void finishUsingMixin(ItemStack stack, World world, LivingEntity user,
-			CallbackInfoReturnable<ItemStack> info) {
+	private void finishUsingMixin(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> info) {
 		if (!(user instanceof PlayerEntity player)) {
 			return;
 		}
 
 		HydrationUtil.addHydrationToPlayerForItemStack(player, stack);
+
+		if (HydrationUtil.isContaminatedItemStack(stack)) {
+			HydrationUtil.addDefaultThirstEffectToPlayer(player);
+		}
 	}
 
 	@Inject(method = "getTooltipData", at = @At("HEAD"), cancellable = true)
@@ -36,10 +39,11 @@ public class ItemMixin {
 			return;
 		}
 
-		int hydrationValue = HydrationUtil.getHydrationValueForItemStack(stack);
+		var hydrationValue = HydrationUtil.getHydrationValueForItemStack(stack);
+		var isContaminated = HydrationUtil.isContaminatedItemStack(stack);
 
 		if (hydrationValue > 0) {
-			info.setReturnValue(Optional.of(new ThirstTooltipData(0, hydrationValue)));
+			info.setReturnValue(Optional.of(new ThirstTooltipData(isContaminated ? 2 : 0, hydrationValue)));
 		}
 	}
 

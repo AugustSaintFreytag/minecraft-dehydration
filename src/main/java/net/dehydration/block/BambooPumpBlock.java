@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import net.dehydration.block.entity.BambooPumpEntity;
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 import net.dehydration.mod.ModBlocks;
 import net.dehydration.mod.ModConfig;
 import net.minecraft.block.Block;
@@ -64,8 +64,8 @@ public class BambooPumpBlock extends BlockWithEntity {
 
 	public BambooPumpBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(ATTACHED, false).with(EXTENDED, false)
-				.with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(ATTACHED, false).with(EXTENDED, false).with(FACING, Direction.NORTH)
+				.with(WATERLOGGED, false));
 	}
 
 	@Override
@@ -79,15 +79,14 @@ public class BambooPumpBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		BambooPumpEntity bambooPumpEntity = (BambooPumpEntity) world.getBlockEntity(pos);
 		if (bambooPumpEntity != null) {
 			ItemStack itemStack = bambooPumpEntity.getStack(0);
 			ItemStack itemStack2 = player.getStackInHand(hand);
 			if (itemStack.isEmpty()) {
 				if (itemStack2.isOf(Items.BUCKET) || itemStack2.isOf(Items.GLASS_BOTTLE)
-						|| (itemStack2.getItem() instanceof LeatherFlask && !LeatherFlask.isFlaskFull(itemStack2))) {
+						|| (itemStack2.getItem() instanceof LeatherFlaskItem && !LeatherFlaskItem.isFlaskFull(itemStack2))) {
 					if (!world.isClient()) {
 						if (player.isCreative()) {
 							bambooPumpEntity.setStack(0, itemStack2.copy());
@@ -116,13 +115,12 @@ public class BambooPumpBlock extends BlockWithEntity {
 					if (!world.isClient()) {
 						player.setStackInHand(hand, bambooPumpEntity.getStack(0));
 						bambooPumpEntity.clear();
-						world.setBlockState(pos, state.with(ATTACHED, false).with(EXTENDED, false),
-								Block.NOTIFY_LISTENERS);
+						world.setBlockState(pos, state.with(ATTACHED, false).with(EXTENDED, false), Block.NOTIFY_LISTENERS);
 					}
 					return ActionResult.success(world.isClient());
 				}
 				if (itemStack.isOf(Items.BUCKET) || itemStack.isOf(Items.GLASS_BOTTLE)
-						|| (itemStack.getItem() instanceof LeatherFlask && !LeatherFlask.isFlaskFull(itemStack))) {
+						|| (itemStack.getItem() instanceof LeatherFlaskItem && !LeatherFlaskItem.isFlaskFull(itemStack))) {
 					if (ModConfig.CONFIG.pumpRequiresUndergroundWaterSource) {
 						boolean foundWater = false;
 						for (int i = 0; i < 50; i++) {
@@ -134,8 +132,7 @@ public class BambooPumpBlock extends BlockWithEntity {
 						if (!foundWater) {
 							if (world.isClient()) {
 								if (state.get(EXTENDED)) {
-									world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS,
-											1.0f, 1.0f);
+									world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
 								}
 							} else {
 								player.sendMessage(Text.translatable("block.dehydration.bamboo_pump.no_water"), true);
@@ -146,12 +143,11 @@ public class BambooPumpBlock extends BlockWithEntity {
 					if (ModConfig.CONFIG.pumpCooldown != 0 && bambooPumpEntity.getCooldown() > 0) {
 						if (world.isClient()) {
 							if (state.get(EXTENDED)) {
-								world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f,
-										1.0f);
+								world.playSound(player, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
 							}
 						} else {
-							player.sendMessage(Text.translatable("block.dehydration.bamboo_pump.cooldown",
-									bambooPumpEntity.getCooldown() / 20), true);
+							player.sendMessage(
+									Text.translatable("block.dehydration.bamboo_pump.cooldown", bambooPumpEntity.getCooldown() / 20), true);
 						}
 						return ActionResult.FAIL;
 					}
@@ -161,8 +157,7 @@ public class BambooPumpBlock extends BlockWithEntity {
 					}
 					if (world.isClient()) {
 						if (state.get(EXTENDED)) {
-							world.playSound(player, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f,
-									1.0f);
+							world.playSound(player, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
 						}
 					} else {
 						world.setBlockState(pos, state.with(EXTENDED, !state.get(EXTENDED)), Block.NOTIFY_LISTENERS);
@@ -206,8 +201,8 @@ public class BambooPumpBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
-			WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world,
+			BlockPos pos, BlockPos neighborPos) {
 		if (direction == Direction.DOWN && !state.canPlaceAt(world, pos)) {
 			return Blocks.AIR.getDefaultState();
 		} else if ((Boolean) state.get(WATERLOGGED)) {
@@ -250,8 +245,7 @@ public class BambooPumpBlock extends BlockWithEntity {
 	public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
 		for (int i = 0; i < stacks.size(); i++) {
-			if (stacks.get(i).getItem() instanceof BlockItem blockItem
-					&& blockItem.getBlock().equals(ModBlocks.BAMBOO_PUMP_BLOCK)
+			if (stacks.get(i).getItem() instanceof BlockItem blockItem && blockItem.getBlock().equals(ModBlocks.BAMBOO_PUMP_BLOCK)
 					&& builder.get(LootContextParameters.BLOCK_ENTITY) instanceof BambooPumpEntity bambooPumpEntity) {
 				ItemStack stack = stacks.get(i);
 				NbtCompound nbtCompound = stack.getOrCreateNbt();
@@ -272,10 +266,8 @@ public class BambooPumpBlock extends BlockWithEntity {
 		}
 	}
 
-	@Nullable
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
-			BlockEntityType<T> type) {
+	@Nullable @Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return checkType(type, ModBlocks.BAMBOO_PUMP_ENTITY,
 				world.isClient() ? BambooPumpEntity::clientTick : BambooPumpEntity::serverTick);
 	}

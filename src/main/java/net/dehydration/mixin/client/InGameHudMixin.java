@@ -20,8 +20,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
-@Environment(EnvType.CLIENT)
-@Mixin(InGameHud.class)
+@Environment(EnvType.CLIENT) @Mixin(InGameHud.class)
 public abstract class InGameHudMixin implements HudAccess {
 
 	@Shadow

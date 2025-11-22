@@ -37,8 +37,7 @@ public class ModTags {
 
 	// Purified Water
 
-	public static final TagKey<Fluid> PURIFIED_WATER = TagKey.of(RegistryKeys.FLUID,
-			new Identifier("dehydration", "purified_water"));
+	public static final TagKey<Fluid> PURIFIED_WATER = TagKey.of(RegistryKeys.FLUID, new Identifier("dehydration", "purified_water"));
 
 	public static void init() {
 	}

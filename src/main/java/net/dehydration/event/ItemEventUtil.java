@@ -17,10 +17,9 @@ public class ItemEventUtil {
 		var itemUseTime = player.getItemUseTime();
 		var playerItemUseTime = itemStack.getMaxUseTime();
 
-		Mod.LOGGER.info("Using item '" + itemStack.getTranslationKey() + "', client: " + world.isClient
-				+ ", using: " + isUsingItem
-				+ ", use time left: " + itemUseTimeLeft + ", item use time: " + itemUseTime + ", player item use time: "
-				+ playerItemUseTime + ".");
+		Mod.LOGGER.info("Using item '" + itemStack.getTranslationKey() + "', client: " + world.isClient + ", using: " + isUsingItem
+				+ ", use time left: " + itemUseTimeLeft + ", item use time: " + itemUseTime + ", player item use time: " + playerItemUseTime
+				+ ".");
 
 		if (!(isUsingItem && itemUseTimeLeft == 0)) {
 			return TypedActionResult.pass(itemStack);
@@ -29,13 +28,13 @@ public class ItemEventUtil {
 		int itemHydrationValue = HydrationUtil.getHydrationValueForItemStack(itemStack);
 
 		if (world.isClient) {
-			Mod.LOGGER.info("Item finished using (client-side): " + itemStack.getTranslationKey()
-					+ " with hydration value " + itemHydrationValue + ".");
+			Mod.LOGGER.info("Item finished using (client-side): " + itemStack.getTranslationKey() + " with hydration value "
+					+ itemHydrationValue + ".");
 			return TypedActionResult.pass(itemStack);
 		}
 
-		Mod.LOGGER.info("Item finished using (server-side): " + itemStack.getTranslationKey()
-				+ " with hydration value " + itemHydrationValue + ".");
+		Mod.LOGGER.info("Item finished using (server-side): " + itemStack.getTranslationKey() + " with hydration value "
+				+ itemHydrationValue + ".");
 
 		return TypedActionResult.pass(itemStack);
 	}

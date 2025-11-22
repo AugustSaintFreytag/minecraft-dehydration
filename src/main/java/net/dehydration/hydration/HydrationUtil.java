@@ -5,13 +5,18 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.dehydration.access.HydrationManagerAccess;
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
+import net.dehydration.item.PurifiedWaterBottleItem;
+import net.dehydration.item.PurifiedWaterBucketItem;
 import net.dehydration.misc.PotionItemUtil;
+import net.dehydration.mixin.accessor.BucketItemAccessor;
 import net.dehydration.mod.ModConfig;
 import net.dehydration.mod.ModEffects;
 import net.dehydration.mod.ModTags;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
@@ -50,8 +55,8 @@ public class HydrationUtil {
 			return 0;
 		}
 
-		if (isModItemStack(stack)) {
-			return getModItemHydrationValueForItemStack(stack);
+		if (isKnownItemStack(stack)) {
+			return getItemHydrationValueForKnownItemStack(stack);
 		}
 
 		if (ModConfig.CONFIG.enableAutoInferredHydrationValues) {
@@ -60,6 +65,44 @@ public class HydrationUtil {
 
 		return 0;
 	}
+
+	// Known Items
+
+	private static boolean isKnownItemStack(ItemStack stack) {
+		var item = stack.getItem();
+		return item instanceof PurifiedWaterBottleItem || item instanceof PurifiedWaterBucketItem || item instanceof LeatherFlaskItem
+				|| item instanceof PotionItem;
+	}
+
+	private static int getItemHydrationValueForKnownItemStack(ItemStack stack) {
+		var item = stack.getItem();
+
+		if (item instanceof PurifiedWaterBucketItem) {
+			return ModConfig.CONFIG.drinksStrongHydrationValue;
+		}
+
+		if (item instanceof PurifiedWaterBottleItem) {
+			return ModConfig.CONFIG.drinksRegularHydrationValue;
+		}
+
+		if (item instanceof PotionItem && !(item instanceof SplashPotionItem)) {
+			// Return weak hydration value for all brewed potions.
+			return ModConfig.CONFIG.drinksWeakHydrationValue;
+		}
+
+		if (item instanceof LeatherFlaskItem) {
+			// Check if flask is empty, return no hydration value if not filled.
+			if (LeatherFlaskItem.isFlaskEmpty(stack)) {
+				return 0;
+			}
+
+			return ModConfig.CONFIG.flaskHydrationValue;
+		}
+
+		return 0;
+	}
+
+	// Auto Inference
 
 	private static int getAutoInferredHydrationValueForItemStack(ItemStack stack) {
 		var item = stack.getItem();
@@ -81,8 +124,7 @@ public class HydrationUtil {
 
 		// Regular Drinks
 
-		if (itemHasDrinkUseAction && matchesAny(key, "water", "tea", "coffee")
-				&& !matchesAny(key, "tea_leaves", "coffee_beans", "cake")) {
+		if (itemHasDrinkUseAction && matchesAny(key, "water", "tea", "coffee") && !matchesAny(key, "tea_leaves", "coffee_beans", "cake")) {
 			return ModConfig.CONFIG.drinksRegularHydrationValue;
 		}
 
@@ -125,47 +167,29 @@ public class HydrationUtil {
 		return false;
 	}
 
-	private static boolean isModItemStack(ItemStack stack) {
-		return stack.getItem() instanceof LeatherFlask
-				|| stack.getItem() instanceof PotionItem;
-	}
-
-	private static int getModItemHydrationValueForItemStack(ItemStack stack) {
-		var item = stack.getItem();
-
-		if (item instanceof LeatherFlask) {
-			// Check if flask is empty, return no hydration value if not filled.
-			if (LeatherFlask.isFlaskEmpty(stack)) {
-				return 0;
-			}
-
-			return ModConfig.CONFIG.flaskHydrationValue;
-		}
-
-		if (item instanceof PotionItem && !(item instanceof SplashPotionItem)) {
-			if (PotionItemUtil.isContaminatedPotionItemStack(stack)) {
-				// Return weak hydration value for contaminated potions.
-				return ModConfig.CONFIG.drinksWeakHydrationValue;
-			}
-
-			// Return regular hydration value for non-contaminated potions.
-			return ModConfig.CONFIG.drinksRegularHydrationValue;
-		}
-
-		return 0;
-	}
-
 	// Effects
 
 	public static boolean isContaminatedItemStack(ItemStack stack) {
 		var item = stack.getItem();
 
-		if (item instanceof LeatherFlask) {
-			return LeatherFlask.isFlaskContaminated(stack);
+		if (item instanceof LeatherFlaskItem) {
+			return LeatherFlaskItem.isFlaskContaminated(stack);
 		}
 
 		if (item instanceof PotionItem && !(item instanceof SplashPotionItem)) {
-			return PotionItemUtil.isContaminatedPotionItemStack(stack);
+			return !PotionItemUtil.isBrewedPotionItemStack(stack);
+		}
+
+		if (item instanceof PurifiedWaterBottleItem || item instanceof PurifiedWaterBucketItem) {
+			return false;
+		}
+
+		if (item instanceof BucketItem) {
+			var fluid = ((BucketItemAccessor) (Object) item).dehydration$getFluid();
+
+			if (fluid == Fluids.WATER) {
+				return true;
+			}
 		}
 
 		return false;
@@ -186,8 +210,7 @@ public class HydrationUtil {
 	}
 
 	public static void addDefaultThirstEffectToPlayer(PlayerEntity player) {
-		player.addStatusEffect(new StatusEffectInstance(ModEffects.THIRST,
-				ModConfig.CONFIG.thirstEffectDuration, 1, false, false, true));
+		player.addStatusEffect(new StatusEffectInstance(ModEffects.THIRST, ModConfig.CONFIG.thirstEffectDuration, 1, false, false, true));
 	}
 
 }

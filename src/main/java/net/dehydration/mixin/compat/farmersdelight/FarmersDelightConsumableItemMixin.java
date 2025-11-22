@@ -19,8 +19,7 @@ public abstract class FarmersDelightConsumableItemMixin extends Item {
 	}
 
 	@Inject(method = "finishUsing", at = @At("RETURN"))
-	private void mixinFinishUsing(ItemStack stack, World level, LivingEntity consumer,
-			CallbackInfoReturnable<ItemStack> callbackInfo) {
+	private void mixinFinishUsing(ItemStack stack, World level, LivingEntity consumer, CallbackInfoReturnable<ItemStack> callbackInfo) {
 		if (!level.isClient) {
 			return;
 		}
