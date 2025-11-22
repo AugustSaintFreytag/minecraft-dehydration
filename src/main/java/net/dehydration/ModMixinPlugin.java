@@ -25,19 +25,16 @@ public class ModMixinPlugin implements IMixinConfigPlugin {
 		var loader = FabricLoader.getInstance();
 
 		// Disable Dehydration -> Origins compatibility if Origins is not loaded
-		if (!loader.isModLoaded("origins")
-				&& (mixinClassName.equals("net.dehydration.mixin.compat.OriginCommandMixin")
-						|| mixinClassName.equals("net.dehydration.mixin.compat.PlayerOriginComponentMixin"))) {
+		if (!loader.isModLoaded("origins") && (mixinClassName.equals("net.dehydration.mixin.compat.OriginCommandMixin")
+				|| mixinClassName.equals("net.dehydration.mixin.compat.PlayerOriginComponentMixin"))) {
 			return false;
 		}
 
-		if (!loader.isModLoaded("autohud")
-				&& (mixinClassName.equals("compat.autohud.AutoHudDehydrationCompatMixin"))) {
+		if (!loader.isModLoaded("autohud") && (mixinClassName.equals("compat.autohud.AutoHudDehydrationCompatMixin"))) {
 			return false;
 		}
 
-		if (!loader.isModLoaded("farmersdelight")
-				&& (mixinClassName.equals("compat.farmersdelight.FarmersDelightConsumableItemMixin"))) {
+		if (!loader.isModLoaded("farmersdelight") && (mixinClassName.equals("compat.farmersdelight.FarmersDelightConsumableItemMixin"))) {
 			return false;
 		}
 

@@ -7,9 +7,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 /**
- * The {@link DehydrationAPI} interface, when implemented, allows you to access
- * the main functions provided by the API. The approach is very similar to
- * ModMenu's API, with its {@code ModMenuApi} interface.
+ * The {@link DehydrationAPI} interface, when implemented, allows you to access the main functions
+ * provided by the API. The approach is very similar to ModMenu's API, with its {@code ModMenuApi}
+ * interface.
  */
 public interface DehydrationAPI {
 

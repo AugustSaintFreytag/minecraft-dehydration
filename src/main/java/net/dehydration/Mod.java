@@ -46,19 +46,17 @@ public class Mod implements ModInitializer {
 		HydrationServerPacket.init();
 		ModJsonReader.init();
 
-		FabricLoader.getInstance().getEntrypointContainers("dehydration", DehydrationAPI.class)
-				.forEach((entrypoint) -> {
-					ModMetadata metadata = entrypoint.getProvider().getMetadata();
-					String id = metadata.getId();
+		FabricLoader.getInstance().getEntrypointContainers("dehydration", DehydrationAPI.class).forEach((entrypoint) -> {
+			ModMetadata metadata = entrypoint.getProvider().getMetadata();
+			String id = metadata.getId();
 
-					try {
-						DehydrationAPI api = entrypoint.getEntrypoint();
-						api.registerDrinkEvent();
-					} catch (Throwable exception) {
-						LOGGER.log(Level.ERROR, "Mod {} is providing a broken DehydrationAPI implementation", id,
-								exception);
-					}
-				});
+			try {
+				DehydrationAPI api = entrypoint.getEntrypoint();
+				api.registerDrinkEvent();
+			} catch (Throwable exception) {
+				LOGGER.log(Level.ERROR, "Mod {} is providing a broken DehydrationAPI implementation", id, exception);
+			}
+		});
 	}
 
 }

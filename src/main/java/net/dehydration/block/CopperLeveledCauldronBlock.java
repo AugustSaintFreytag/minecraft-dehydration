@@ -26,8 +26,8 @@ public class CopperLeveledCauldronBlock extends AbstractCopperCauldronBlock {
 	public static final Predicate<Biome.Precipitation> SNOW_PREDICATE;
 	private final Predicate<Biome.Precipitation> precipitationPredicate;
 
-	public CopperLeveledCauldronBlock(AbstractBlock.Settings settings,
-			Predicate<Biome.Precipitation> precipitationPredicate, Map<Item, CopperCauldronBehavior> behaviorMap) {
+	public CopperLeveledCauldronBlock(AbstractBlock.Settings settings, Predicate<Biome.Precipitation> precipitationPredicate,
+			Map<Item, CopperCauldronBehavior> behaviorMap) {
 		super(settings, behaviorMap);
 		this.precipitationPredicate = precipitationPredicate;
 		this.setDefaultState((BlockState) ((BlockState) this.stateManager.getDefaultState()).with(LEVEL, 1));
@@ -65,8 +65,7 @@ public class CopperLeveledCauldronBlock extends AbstractCopperCauldronBlock {
 
 	public static void decrementFluidLevel(BlockState state, World world, BlockPos pos) {
 		int i = (Integer) state.get(LEVEL) - 1;
-		world.setBlockState(pos,
-				i <= 0 ? ModBlocks.COPPER_CAULDRON_BLOCK.getDefaultState() : (BlockState) state.with(LEVEL, i));
+		world.setBlockState(pos, i <= 0 ? ModBlocks.COPPER_CAULDRON_BLOCK.getDefaultState() : (BlockState) state.with(LEVEL, i));
 	}
 
 	@Override

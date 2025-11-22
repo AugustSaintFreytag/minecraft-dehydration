@@ -27,29 +27,24 @@ import net.minecraft.util.Identifier;
 public class ModBlocks {
 	// Block
 	public static final Block CAMPFIRE_CAULDRON_BLOCK = register("campfire_cauldron", true,
-			new CampfireCauldronBlock(
-					FabricBlockSettings.copy(Blocks.CAULDRON).pistonBehavior(PistonBehavior.DESTROY)));
+			new CampfireCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON).pistonBehavior(PistonBehavior.DESTROY)));
 	public static final Block COPPER_CAULDRON_BLOCK = register("copper_cauldron", true,
 			new CopperCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON)));
 	public static final Block COPPER_WATER_CAULDRON_BLOCK = register("water_copper_cauldron", false,
-			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON),
-					CopperLeveledCauldronBlock.RAIN_PREDICATE, CopperCauldronBehavior.WATER_COPPER_CAULDRON_BEHAVIOR));
+			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON), CopperLeveledCauldronBlock.RAIN_PREDICATE,
+					CopperCauldronBehavior.WATER_COPPER_CAULDRON_BEHAVIOR));
 	public static final Block COPPER_POWDERED_CAULDRON_BLOCK = register("powder_snow_copper_cauldron", false,
-			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON),
-					CopperLeveledCauldronBlock.SNOW_PREDICATE,
+			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON), CopperLeveledCauldronBlock.SNOW_PREDICATE,
 					CopperCauldronBehavior.POWDER_SNOW_COPPER_CAULDRON_BEHAVIOR));
 	public static final Block COPPER_PURIFIED_WATER_CAULDRON_BLOCK = register("purified_water_copper_cauldron", false,
-			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON),
-					CopperLeveledCauldronBlock.RAIN_PREDICATE,
+			new CopperLeveledCauldronBlock(FabricBlockSettings.copy(Blocks.CAULDRON), CopperLeveledCauldronBlock.RAIN_PREDICATE,
 					CopperCauldronBehavior.PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR));
-	public static final Block BAMBOO_PUMP_BLOCK = register("bamboo_pump", true,
-			new BambooPumpBlock(FabricBlockSettings.create().mapColor(MapColor.DARK_GREEN)
-					.pistonBehavior(PistonBehavior.DESTROY).strength(1.2f, 4.0f).sounds(BlockSoundGroup.BAMBOO)));
+	public static final Block BAMBOO_PUMP_BLOCK = register("bamboo_pump", true, new BambooPumpBlock(FabricBlockSettings.create()
+			.mapColor(MapColor.DARK_GREEN).pistonBehavior(PistonBehavior.DESTROY).strength(1.2f, 4.0f).sounds(BlockSoundGroup.BAMBOO)));
 	public static final Block PURIFIED_WATER = register("purified_water", false,
 			new FluidBlock(ModFluids.PURIFIED_WATER,
-					AbstractBlock.Settings.create().mapColor(MapColor.WATER_BLUE).noCollision()
-							.strength(100.0f).pistonBehavior(PistonBehavior.DESTROY).dropsNothing().liquid()
-							.sounds(BlockSoundGroup.INTENTIONALLY_EMPTY)));
+					AbstractBlock.Settings.create().mapColor(MapColor.WATER_BLUE).noCollision().strength(100.0f)
+							.pistonBehavior(PistonBehavior.DESTROY).dropsNothing().liquid().sounds(BlockSoundGroup.INTENTIONALLY_EMPTY)));
 
 	// Entity
 	public static BlockEntityType<CampfireCauldronEntity> CAMPFIRE_CAULDRON_ENTITY = FabricBlockEntityTypeBuilder
@@ -70,8 +65,7 @@ public class ModBlocks {
 	}
 
 	public static void init() {
-		Registry.register(Registries.BLOCK_ENTITY_TYPE, "dehydration:campfire_cauldron_entity",
-				CAMPFIRE_CAULDRON_ENTITY);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, "dehydration:campfire_cauldron_entity", CAMPFIRE_CAULDRON_ENTITY);
 		Registry.register(Registries.BLOCK_ENTITY_TYPE, "dehydration:bamboo_pump_entity", BAMBOO_PUMP_ENTITY);
 	}
 

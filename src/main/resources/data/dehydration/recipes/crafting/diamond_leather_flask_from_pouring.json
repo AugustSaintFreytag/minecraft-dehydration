@@ -1,11 +1,11 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "dehydration:diamond_leather_flask"
-    }
-  ],
-  "result": {
-    "item": "dehydration:diamond_leather_flask"
-  }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "dehydration:diamond_leather_flask"
+		}
+	],
+	"result": {
+		"item": "dehydration:diamond_leather_flask"
+	}
 }

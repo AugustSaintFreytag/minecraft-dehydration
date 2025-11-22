@@ -10,9 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
 
-    @Redirect(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addExhaustion(F)V"))
-    private void applyUpdateEffectMixin(PlayerEntity playerEntity, float f) {
-        playerEntity.getHungerManager().addExhaustion(f);
-    }
+	@Redirect(method = "applyUpdateEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addExhaustion(F)V"))
+	private void applyUpdateEffectMixin(PlayerEntity playerEntity, float f) {
+		playerEntity.getHungerManager().addExhaustion(f);
+	}
 
 }

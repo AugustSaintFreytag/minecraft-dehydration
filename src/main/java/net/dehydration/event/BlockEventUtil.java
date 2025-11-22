@@ -20,8 +20,7 @@ import net.minecraft.world.World;
 
 public class BlockEventUtil {
 
-	public static ActionResult handleUseBlockEvent(PlayerEntity player, World world, Hand hand,
-			BlockHitResult originalHitResult) {
+	public static ActionResult handleUseBlockEvent(PlayerEntity player, World world, Hand hand, BlockHitResult originalHitResult) {
 		// Initial checks for player state and held item
 		if (player.isCreative() || player.isSpectator() || !player.isSneaking()) {
 			return ActionResult.PASS;
@@ -92,8 +91,7 @@ public class BlockEventUtil {
 			}
 		} else {
 			// Client-side logic: play finish drinking sound
-			world.playSound(player, player.getX(), player.getY(), player.getZ(),
-					ModSounds.WATER_SIP_EVENT, SoundCategory.PLAYERS, 1.0F,
+			world.playSound(player, player.getX(), player.getY(), player.getZ(), ModSounds.WATER_SIP_EVENT, SoundCategory.PLAYERS, 1.0F,
 					0.9F + (world.getRandom().nextFloat() / 5F));
 		}
 

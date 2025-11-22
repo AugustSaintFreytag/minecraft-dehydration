@@ -31,8 +31,7 @@ public class HydrationServerPacket {
 		buf.writeIntArray(new int[] { serverPlayerEntity.getId(),
 				((HydrationManagerAccess) serverPlayerEntity).getHydrationManager().getHydrationLevel() });
 
-		serverPlayerEntity.networkHandler
-				.sendPacket(new CustomPayloadS2CPacket(HydrationServerPacket.THIRST_UPDATE, buf));
+		serverPlayerEntity.networkHandler.sendPacket(new CustomPayloadS2CPacket(HydrationServerPacket.THIRST_UPDATE, buf));
 	}
 
 	public static void writeS2CHydrationTemplateSyncPacket(ServerPlayerEntity serverPlayerEntity) {
@@ -52,7 +51,6 @@ public class HydrationServerPacket {
 			});
 		});
 
-		serverPlayerEntity.networkHandler
-				.sendPacket(new CustomPayloadS2CPacket(HydrationServerPacket.HYDRATION_TEMPLATE_SYNC, buf));
+		serverPlayerEntity.networkHandler.sendPacket(new CustomPayloadS2CPacket(HydrationServerPacket.HYDRATION_TEMPLATE_SYNC, buf));
 	}
 }

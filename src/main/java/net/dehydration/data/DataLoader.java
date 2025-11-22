@@ -61,14 +61,12 @@ public class DataLoader implements SimpleSynchronousResourceReloadListener {
 
 							List<Item> items = new ArrayList<Item>();
 							for (int u = 0; u < jsonObject.getAsJsonArray("items").size(); u++) {
-								if (!Registries.ITEM.containsId(
-										new Identifier(jsonObject.getAsJsonArray("items").get(u).getAsString()))) {
+								if (!Registries.ITEM.containsId(new Identifier(jsonObject.getAsJsonArray("items").get(u).getAsString()))) {
 									Mod.LOGGER.warn("{} is not a valid item identifier",
 											jsonObject.getAsJsonArray("items").get(u).getAsString());
 									continue;
 								}
-								items.add(Registries.ITEM
-										.get(new Identifier(jsonObject.getAsJsonArray("items").get(u).getAsString())));
+								items.add(Registries.ITEM.get(new Identifier(jsonObject.getAsJsonArray("items").get(u).getAsString())));
 							}
 							Mod.HYDRATION_TEMPLATES.add(new HydrationTemplate(i, items));
 
@@ -79,8 +77,7 @@ public class DataLoader implements SimpleSynchronousResourceReloadListener {
 				}
 
 			} catch (Exception e) {
-				Mod.LOGGER.error("Error occurred while loading resource {}. {}", id.toString(),
-						e.toString());
+				Mod.LOGGER.error("Error occurred while loading resource {}. {}", id.toString(), e.toString());
 			}
 		});
 

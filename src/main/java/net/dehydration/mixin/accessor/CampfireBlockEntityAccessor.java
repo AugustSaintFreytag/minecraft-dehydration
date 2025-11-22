@@ -10,6 +10,6 @@ import net.minecraft.util.collection.DefaultedList;
 @Mixin(CampfireBlockEntity.class)
 public abstract interface CampfireBlockEntityAccessor {
 
-    @Accessor("itemsBeingCooked")
-    public abstract DefaultedList<ItemStack> getItemsBeingCooked();
+	@Accessor("itemsBeingCooked")
+	public abstract DefaultedList<ItemStack> getItemsBeingCooked();
 }

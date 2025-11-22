@@ -42,16 +42,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Se
 			compatSync--;
 
 			if (compatSync == 1) {
-				HydrationServerPacket.writeS2CExcludedSyncPacket((ServerPlayerEntity) (Object) this,
-						hydrationManager.hasThirst());
+				HydrationServerPacket.writeS2CExcludedSyncPacket((ServerPlayerEntity) (Object) this, hydrationManager.hasThirst());
 			}
 		}
 	}
 
 	@Inject(method = "Lnet/minecraft/server/network/ServerPlayerEntity;copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;setHealth(F)V"))
 	public void copyFromMixinOne(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo info) {
-		this.hydrationManager
-				.setHydrationLevel(((HydrationManagerAccess) oldPlayer).getHydrationManager().getHydrationLevel());
+		this.hydrationManager.setHydrationLevel(((HydrationManagerAccess) oldPlayer).getHydrationManager().getHydrationLevel());
 	}
 
 	@Inject(method = "Lnet/minecraft/server/network/ServerPlayerEntity;copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V", at = @At(value = "TAIL"))
@@ -60,13 +58,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Se
 	}
 
 	@Inject(method = "Lnet/minecraft/server/network/ServerPlayerEntity;teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("TAIL"))
-	private void teleportMixin(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch,
-			CallbackInfo info) {
+	private void teleportMixin(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo info) {
 		this.syncedThirstLevel = -1;
 	}
 
-	@Nullable
-	@Inject(method = "moveToWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerPlayerEntity;syncedFoodLevel:I", ordinal = 0))
+	@Nullable @Inject(method = "moveToWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerPlayerEntity;syncedFoodLevel:I", ordinal = 0))
 	private void moveToWorldMixin(ServerWorld destination, CallbackInfoReturnable<Entity> info) {
 		this.syncedThirstLevel = -1;
 	}

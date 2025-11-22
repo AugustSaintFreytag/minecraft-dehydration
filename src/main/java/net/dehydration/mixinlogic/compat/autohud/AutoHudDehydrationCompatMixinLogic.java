@@ -14,11 +14,8 @@ public interface AutoHudDehydrationCompatMixinLogic {
 
 	static void mixinStatic() {
 		// Overwrite the static block's behavior
-		DehydrationCompat.Thirst = Component.builder("dehydration", "thirst")
-				.config(AutoHud.config.hunger())
-				.stackComponents(new Component[] { Components.Air })
-				.inMainHud()
-				.state((player) -> {
+		DehydrationCompat.Thirst = Component.builder("dehydration", "thirst").config(AutoHud.config.hunger())
+				.stackComponents(new Component[] { Components.Air }).inMainHud().state((player) -> {
 					var hydrationManager = ((HydrationManagerAccess) player).getHydrationManager();
 
 					if (hydrationManager.hasThirst()) {

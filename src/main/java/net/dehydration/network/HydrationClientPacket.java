@@ -19,26 +19,24 @@ import net.minecraft.registry.Registries;
 public class HydrationClientPacket {
 
 	public static void init() {
-		ClientPlayNetworking.registerGlobalReceiver(HydrationServerPacket.THIRST_UPDATE,
-				(client, handler, buffer, responseSender) -> {
-					int[] bufferArray = buffer.readIntArray();
-					int entityId = bufferArray[0];
-					int thirstLevel = bufferArray[1];
-					client.execute(() -> {
-						if (client.player.getWorld().getEntityById(entityId) != null) {
-							PlayerEntity player = (PlayerEntity) client.player.getWorld().getEntityById(entityId);
-							HydrationManager hydrationManager = ((HydrationManagerAccess) player).getHydrationManager();
-							hydrationManager.setHydrationLevel(thirstLevel);
-						}
-					});
-				});
-		ClientPlayNetworking.registerGlobalReceiver(HydrationServerPacket.EXCLUDED_SYNC,
-				(client, handler, buffer, responseSender) -> {
-					boolean setThirst = buffer.readBoolean();
-					client.execute(() -> {
-						((HydrationManagerAccess) client.player).getHydrationManager().setThirst(setThirst);
-					});
-				});
+		ClientPlayNetworking.registerGlobalReceiver(HydrationServerPacket.THIRST_UPDATE, (client, handler, buffer, responseSender) -> {
+			int[] bufferArray = buffer.readIntArray();
+			int entityId = bufferArray[0];
+			int thirstLevel = bufferArray[1];
+			client.execute(() -> {
+				if (client.player.getWorld().getEntityById(entityId) != null) {
+					PlayerEntity player = (PlayerEntity) client.player.getWorld().getEntityById(entityId);
+					HydrationManager hydrationManager = ((HydrationManagerAccess) player).getHydrationManager();
+					hydrationManager.setHydrationLevel(thirstLevel);
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(HydrationServerPacket.EXCLUDED_SYNC, (client, handler, buffer, responseSender) -> {
+			boolean setThirst = buffer.readBoolean();
+			client.execute(() -> {
+				((HydrationManagerAccess) client.player).getHydrationManager().setThirst(setThirst);
+			});
+		});
 		ClientPlayNetworking.registerGlobalReceiver(HydrationServerPacket.HYDRATION_TEMPLATE_SYNC,
 				(client, handler, buffer, responseSender) -> {
 					List<HydrationTemplate> hydrationTemplates = new ArrayList<HydrationTemplate>();

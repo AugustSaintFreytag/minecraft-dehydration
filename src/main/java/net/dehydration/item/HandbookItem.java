@@ -19,27 +19,27 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 public class HandbookItem extends Item {
 
-    private final boolean isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
+	private final boolean isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
 
-    public HandbookItem(Settings settings) {
-        super(settings);
-    }
+	public HandbookItem(Settings settings) {
+		super(settings);
+	}
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient() && isPatchouliLoaded) {
-            PatchouliAPI.get().openBookGUI((ServerPlayerEntity) user, new Identifier("dehydration", "dehydration"));
-            return TypedActionResult.success(user.getStackInHand(hand));
-        }
-        return TypedActionResult.fail(user.getStackInHand(hand));
-    }
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		if (!world.isClient() && isPatchouliLoaded) {
+			PatchouliAPI.get().openBookGUI((ServerPlayerEntity) user, new Identifier("dehydration", "dehydration"));
+			return TypedActionResult.success(user.getStackInHand(hand));
+		}
+		return TypedActionResult.fail(user.getStackInHand(hand));
+	}
 
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (!isPatchouliLoaded) {
-            tooltip.add(Text.translatable("item.dehydration.patchouli_book.tooltip"));
-        }
-        super.appendTooltip(stack, world, tooltip, context);
-    }
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		if (!isPatchouliLoaded) {
+			tooltip.add(Text.translatable("item.dehydration.patchouli_book.tooltip"));
+		}
+		super.appendTooltip(stack, world, tooltip, context);
+	}
 
 }

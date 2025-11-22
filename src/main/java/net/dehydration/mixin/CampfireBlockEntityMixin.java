@@ -25,9 +25,8 @@ import net.minecraft.world.World;
 public class CampfireBlockEntityMixin {
 
 	@Inject(method = "litServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ItemScatterer;spawn(Lnet/minecraft/world/World;DDDLnet/minecraft/item/ItemStack;)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
-	private static void litServerTickMixin(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire,
-			CallbackInfo info, boolean bl, int i, ItemStack itemStack, Inventory inventory,
-			ItemStack itemStack2) {
+	private static void litServerTickMixin(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo info,
+			boolean bl, int i, ItemStack itemStack, Inventory inventory, ItemStack itemStack2) {
 		if (itemStack2.getItem() instanceof PotionItem && PotionUtil.getPotion(itemStack2) == Potions.WATER) {
 			ItemScatterer.spawn(world, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(),
 					PotionUtil.setPotion(new ItemStack(Items.POTION), ModItems.PURIFIED_WATER));

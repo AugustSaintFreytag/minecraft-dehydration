@@ -23,8 +23,8 @@ public class BambooPumpRenderer implements BlockEntityRenderer<BambooPumpEntity>
 	}
 
 	@Override
-	public void render(BambooPumpEntity blockEntity, float tickDelta, MatrixStack matrices,
-			VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public void render(BambooPumpEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+			int light, int overlay) {
 		if (blockEntity.getWorld() != null && !blockEntity.isEmpty() && !blockEntity.getStack(0).isOf(Items.BUCKET)
 				&& !blockEntity.getStack(0).isOf(ModItems.PURIFIED_WATER_BUCKET)) {
 			BlockState blockState = blockEntity.getWorld().getBlockState(blockEntity.getPos());
@@ -45,9 +45,8 @@ public class BambooPumpRenderer implements BlockEntityRenderer<BambooPumpEntity>
 				}
 				matrices.scale(0.5F, 0.5F, 0.5F);
 
-				MinecraftClient.getInstance().getItemRenderer().renderItem(blockEntity.getStack(0),
-						ModelTransformationMode.HEAD, light, overlay, matrices, vertexConsumers, blockEntity.getWorld(),
-						(int) blockEntity.getPos().asLong());
+				MinecraftClient.getInstance().getItemRenderer().renderItem(blockEntity.getStack(0), ModelTransformationMode.HEAD, light,
+						overlay, matrices, vertexConsumers, blockEntity.getWorld(), (int) blockEntity.getPos().asLong());
 				matrices.pop();
 			}
 		}

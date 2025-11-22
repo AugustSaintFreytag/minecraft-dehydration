@@ -19,8 +19,7 @@ public abstract class MilkBucketItemMixin extends Item {
 	}
 
 	@Inject(method = "finishUsing", at = @At("HEAD"))
-	private void finishUsingMixin(ItemStack stack, World world, LivingEntity user,
-			CallbackInfoReturnable<ItemStack> info) {
+	private void finishUsingMixin(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> info) {
 		super.finishUsing(stack, world, user);
 	}
 

@@ -14,8 +14,7 @@ public class ModJsonReader {
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, serverResourceManager, success) -> {
 			if (success) {
 				for (int i = 0; i < server.getPlayerManager().getPlayerList().size(); i++)
-					HydrationServerPacket
-							.writeS2CHydrationTemplateSyncPacket(server.getPlayerManager().getPlayerList().get(i));
+					HydrationServerPacket.writeS2CHydrationTemplateSyncPacket(server.getPlayerManager().getPlayerList().get(i));
 				Mod.LOGGER.info("Finished reload on {}", Thread.currentThread());
 			} else
 				Mod.LOGGER.error("Failed to reload on {}", Thread.currentThread());

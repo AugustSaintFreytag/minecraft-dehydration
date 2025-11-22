@@ -28,8 +28,9 @@ public abstract class WaterFluidMixin extends FlowableFluid {
 	@Override
 	protected void flow(WorldAccess world, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
 		if (state.getFluidState().isIn(ModTags.PURIFIED_WATER)) {
-			world.setBlockState(pos, fluidState.getBlockState().with(FluidBlock.LEVEL,
-					PurifiedWaterFluid.getBlockStateLevel(state.getFluidState())), Block.NOTIFY_ALL);
+			world.setBlockState(pos,
+					fluidState.getBlockState().with(FluidBlock.LEVEL, PurifiedWaterFluid.getBlockStateLevel(state.getFluidState())),
+					Block.NOTIFY_ALL);
 		} else {
 			super.flow(world, pos, state, direction, fluidState);
 		}

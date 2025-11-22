@@ -17,8 +17,7 @@ public class HydrationManager {
 
 	// Damage Type
 
-	public static final RegistryKey<DamageType> THIRST = RegistryKey.of(RegistryKeys.DAMAGE_TYPE,
-			new Identifier("dehydration", "thirst"));
+	public static final RegistryKey<DamageType> THIRST = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier("dehydration", "thirst"));
 
 	// Properties
 
@@ -50,8 +49,7 @@ public class HydrationManager {
 			++this.dehydrationTimer;
 
 			if (this.dehydrationTimer >= 90) {
-				if (ModConfig.CONFIG.dehydrationDepletionDamage > 0 && player.getHealth() > 10.0F
-						|| difficulty == Difficulty.HARD
+				if (ModConfig.CONFIG.dehydrationDepletionDamage > 0 && player.getHealth() > 10.0F || difficulty == Difficulty.HARD
 						|| (player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL)) {
 					player.damage(createDamageSource(player), ModConfig.CONFIG.dehydrationDepletionDamage);
 				}
@@ -69,8 +67,7 @@ public class HydrationManager {
 
 			if (hydrationLevel == 0 && player.getHungerManager().getFoodLevel() == 0
 					&& !player.hasStatusEffect(StatusEffects.MINING_FATIGUE)) {
-				player.addStatusEffect(
-						new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 409, 2, false, false, false));
+				player.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 409, 2, false, false, false));
 			}
 		}
 
