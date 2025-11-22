@@ -5,10 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "net.dehydration.ModMixinPlugin",
   "mixins": [
+	"accessor.CampfireBlockEntityAccessor",
+	"accessor.BucketItemAccessor",
 	"compat.autohud.AutoHudDehydrationCompatMixin",
 	"compat.farmersdelight.FarmersDelightConsumableItemMixin",
 	"MilkBucketItemMixin",
-    "accessor.CampfireBlockEntityAccessor",
     "BootstrapMixin",
     "BrewingRecipeRegistryMixin",
     "CampfireBlockEntityMixin",
@@ -25,7 +26,8 @@
     "ServerPlayerEntityMixin",
     "StatusEffectMixin",
     "TooltipComponentMixin",
-    "WaterFluidMixin"
+    "WaterFluidMixin",
+	"BucketItemMixin"
   ],
   "client": [
     "client.InGameHudMixin",
