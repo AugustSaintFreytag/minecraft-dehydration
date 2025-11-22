@@ -10,24 +10,44 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CampfireCauldronEntity extends BlockEntity {
-	public boolean isBoiled;
+
+	// Configuration
+
+	private static final String IS_PURIFIED_NBT_KEY = "Purified";
+
+	// State
+
+	public boolean isPurified;
+
 	private int ticker;
+
+	// Init
 
 	public CampfireCauldronEntity(BlockPos pos, BlockState state) {
 		super(ModBlocks.CAMPFIRE_CAULDRON_ENTITY, pos, state);
 	}
 
+	// NBT
+
 	@Override
 	public void readNbt(NbtCompound tag) {
 		super.readNbt(tag);
-		this.isBoiled = tag.getBoolean("Boiled");
+		this.isPurified = tag.getBoolean(IS_PURIFIED_NBT_KEY);
 	}
 
 	@Override
 	public void writeNbt(NbtCompound tag) {
 		super.writeNbt(tag);
-		tag.putBoolean("Boiled", isBoiled);
+		tag.putBoolean(IS_PURIFIED_NBT_KEY, isPurified);
 	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		sendUpdate();
+	}
+
+	// Tick
 
 	public static void clientTick(World world, BlockPos pos, BlockState state, CampfireCauldronEntity blockEntity) {
 		blockEntity.update();
@@ -37,22 +57,18 @@ public class CampfireCauldronEntity extends BlockEntity {
 		blockEntity.update();
 	}
 
+	// Update
+
 	public void update() {
 		CampfireCauldronBlock campfireCauldronBlock = (CampfireCauldronBlock) this.getCachedState().getBlock();
-		if (campfireCauldronBlock.isFireBurning(world, pos)
-				&& this.getCachedState().get(CampfireCauldronBlock.LEVEL) > 0 && !this.isBoiled) {
+		if (campfireCauldronBlock.isFireBurning(world, pos) && this.getCachedState().get(CampfireCauldronBlock.LEVEL) > 0
+				&& !this.isPurified) {
 			this.ticker++;
 			if (this.ticker >= ModConfig.CONFIG.waterBoilingTime) {
-				this.isBoiled = true;
+				this.isPurified = true;
 				this.ticker = 0;
 			}
 		}
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		sendUpdate();
 	}
 
 	private void sendUpdate() {
@@ -62,11 +78,14 @@ public class CampfireCauldronEntity extends BlockEntity {
 		}
 	}
 
-	// Client sync issue since method gets only called on server and client looks
-	// for isBoiled
 	public void onFillingCauldron() {
-		this.isBoiled = false;
+		onFillingCauldron(false);
+	}
+
+	public void onFillingCauldron(boolean isPurified) {
+		this.isPurified = this.isPurified && isPurified;
 		this.ticker = 0;
+		this.markDirty();
 	}
 
 }

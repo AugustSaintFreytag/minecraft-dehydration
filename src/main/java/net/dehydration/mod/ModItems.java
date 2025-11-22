@@ -5,10 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.dehydration.item.HandbookItem;
-import net.dehydration.item.LeatherFlask;
-import net.dehydration.item.PurifiedWaterBucket;
+import net.dehydration.item.LeatherFlaskItem;
 import net.dehydration.item.PurifiedWaterBottleItem;
+import net.dehydration.item.PurifiedWaterBucketItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -39,26 +38,22 @@ public class ModItems {
 
 	// Flasks
 
-	public static final Item LEATHER_FLASK = register("leather_flask",
-			new LeatherFlask(0, new Item.Settings().maxCount(1)));
+	public static final Item LEATHER_FLASK = register("leather_flask", new LeatherFlaskItem(0, new Item.Settings().maxCount(1)));
 
-	public static final Item IRON_LEATHER_FLASK = register("iron_leather_flask",
-			new LeatherFlask(2, new Item.Settings().maxCount(1)));
+	public static final Item IRON_LEATHER_FLASK = register("iron_leather_flask", new LeatherFlaskItem(2, new Item.Settings().maxCount(1)));
 
 	public static final Item GOLDEN_LEATHER_FLASK = register("golden_leather_flask",
-			new LeatherFlask(4, new Item.Settings().maxCount(1)));
+			new LeatherFlaskItem(4, new Item.Settings().maxCount(1)));
 
 	public static final Item DIAMOND_LEATHER_FLASK = register("diamond_leather_flask",
-			new LeatherFlask(6, new Item.Settings().maxCount(1)));
+			new LeatherFlaskItem(6, new Item.Settings().maxCount(1)));
 
 	public static final Item NETHERITE_LEATHER_FLASK = register("netherite_leather_flask",
-			new LeatherFlask(8, new Item.Settings().maxCount(1).fireproof()));
+			new LeatherFlaskItem(8, new Item.Settings().maxCount(1).fireproof()));
 
-	// Potion
+	// Water
 
 	public static final Potion PURIFIED_WATER = new Potion(new StatusEffectInstance[0]);
-
-	public static final Potion HYDRATION = new Potion(new StatusEffectInstance(ModEffects.HYDRATION, 900));
 
 	// Handbook
 
@@ -69,29 +64,35 @@ public class ModItems {
 	// Bucket
 
 	public static final Item PURIFIED_WATER_BUCKET = register("purified_water_bucket",
-			new PurifiedWaterBucket(new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
+			new PurifiedWaterBucketItem(new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
+
+	// Effects
+
+	public static final Potion HYDRATION = new Potion(new StatusEffectInstance(ModEffects.HYDRATION, 900));
 
 	// Registration
 
 	private static Item register(String name, Item item) {
 		ItemGroupEvents.modifyEntriesEvent(DEHYDRATION_ITEM_GROUP).register(entries -> entries.add(item));
 		ITEMS.put(new Identifier("dehydration", name), item);
+
 		if (name.contains("flask")) {
 			FLASK_ITEM_LIST.add(item);
 		}
+
 		return item;
 	}
 
 	// Init
 
 	public static void init() {
-		Registry.register(Registries.ITEM_GROUP, DEHYDRATION_ITEM_GROUP,
-				FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.LEATHER_FLASK))
-						.displayName(Text.translatable("item.dehydration.item_group")).build());
+		Registry.register(Registries.ITEM_GROUP, DEHYDRATION_ITEM_GROUP, FabricItemGroup.builder()
+				.icon(() -> new ItemStack(ModItems.LEATHER_FLASK)).displayName(Text.translatable("item.dehydration.item_group")).build());
+
 		for (Identifier id : ITEMS.keySet()) {
 			Registry.register(Registries.ITEM, id, ITEMS.get(id));
 		}
-		Registry.register(Registries.POTION, "purified_water", PURIFIED_WATER);
+
 		Registry.register(Registries.POTION, "hydration", HYDRATION);
 	}
 

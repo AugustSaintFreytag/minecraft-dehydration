@@ -2,7 +2,7 @@ package net.dehydration.block.entity;
 
 import net.dehydration.block.CampfireCauldronBlock;
 import net.dehydration.block.CopperLeveledCauldronBlock;
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 import net.dehydration.mod.ModBlocks;
 import net.dehydration.mod.ModItems;
 import net.minecraft.block.BlockState;
@@ -26,23 +26,19 @@ public class DispenserBehaviorAccess {
 			public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
 				this.setSuccess(false);
 				ServerWorld serverWorld = pointer.getWorld();
-				BlockPos blockPos = pointer.getPos()
-						.offset((Direction) pointer.getBlockState().get(DispenserBlock.FACING));
+				BlockPos blockPos = pointer.getPos().offset((Direction) pointer.getBlockState().get(DispenserBlock.FACING));
 				BlockState blockState = serverWorld.getBlockState(blockPos);
-				if (blockState.isOf(ModBlocks.CAMPFIRE_CAULDRON_BLOCK)
-						&& blockState.get(CampfireCauldronBlock.LEVEL) > 0) {
+				if (blockState.isOf(ModBlocks.CAMPFIRE_CAULDRON_BLOCK) && blockState.get(CampfireCauldronBlock.LEVEL) > 0) {
 					CampfireCauldronBlock campfireCauldronBlock = (CampfireCauldronBlock) blockState.getBlock();
-					if (campfireCauldronBlock.isPurifiedWater(serverWorld, blockPos) && stack.hasNbt() && stack.getNbt()
-							.getInt(LeatherFlask.TAG_WATER) < 2 + ((LeatherFlask) stack.getItem()).maxFillLevel) {
+					if (campfireCauldronBlock.isPurifiedWater(serverWorld, blockPos) && stack.hasNbt()
+							&& stack.getNbt().getInt(LeatherFlaskItem.TAG_WATER) < 2 + ((LeatherFlaskItem) stack.getItem()).maxFillLevel) {
 						this.setSuccess(true);
-						campfireCauldronBlock.setLevel(serverWorld, blockPos, blockState,
-								blockState.get(CampfireCauldronBlock.LEVEL) - 1);
+						campfireCauldronBlock.setLevel(serverWorld, blockPos, blockState, blockState.get(CampfireCauldronBlock.LEVEL) - 1);
 						return getNewFlask(stack, pointer);
 					}
 				} else if (blockState.isOf(ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK)
 						&& blockState.get(CopperLeveledCauldronBlock.LEVEL) > 0 && stack.hasNbt()
-						&& stack.getNbt().getInt(LeatherFlask.TAG_WATER) < 2
-								+ ((LeatherFlask) stack.getItem()).maxFillLevel) {
+						&& stack.getNbt().getInt(LeatherFlaskItem.TAG_WATER) < 2 + ((LeatherFlaskItem) stack.getItem()).maxFillLevel) {
 					this.setSuccess(true);
 					CopperLeveledCauldronBlock.decrementFluidLevel(blockState, serverWorld, blockPos);
 
@@ -59,13 +55,12 @@ public class DispenserBehaviorAccess {
 	private static ItemStack getNewFlask(ItemStack stack, BlockPointer pointer) {
 		ItemStack newStack = stack.copy();
 		NbtCompound tags = new NbtCompound();
-		tags.putInt(LeatherFlask.TAG_WATER, 2 + ((LeatherFlask) newStack.getItem()).maxFillLevel);
+		tags.putInt(LeatherFlaskItem.TAG_WATER, 2 + ((LeatherFlaskItem) newStack.getItem()).maxFillLevel);
 		int waterPurity = 0;
-		if (stack.getNbt().getInt(LeatherFlask.TAG_WATER) != 0
-				&& newStack.getNbt().getInt(LeatherFlask.TAG_WATER_KIND) != 0) {
+		if (stack.getNbt().getInt(LeatherFlaskItem.TAG_WATER) != 0 && newStack.getNbt().getInt(LeatherFlaskItem.TAG_WATER_KIND) != 0) {
 			waterPurity = 1;
 		}
-		tags.putInt(LeatherFlask.TAG_WATER_KIND, waterPurity);
+		tags.putInt(LeatherFlaskItem.TAG_WATER_KIND, waterPurity);
 		newStack.setNbt(tags);
 		stack.decrement(1);
 

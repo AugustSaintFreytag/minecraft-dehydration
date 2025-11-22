@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.dehydration.block.CopperLeveledCauldronBlock;
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 import net.dehydration.mod.ModBlocks;
 import net.dehydration.mod.ModItems;
 import net.dehydration.mod.ModSounds;
@@ -37,15 +37,13 @@ public interface CopperCauldronBehavior {
 	Map<Item, CopperCauldronBehavior> PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR = createMap();
 	CopperCauldronBehavior FILL_WITH_WATER = (state, world, pos, player, hand, stack) -> {
 		return fillCauldron(world, pos, player, hand, stack,
-				(BlockState) ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState()
-						.with(CopperLeveledCauldronBlock.LEVEL, 3),
+				(BlockState) ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState().with(CopperLeveledCauldronBlock.LEVEL, 3),
 				SoundEvents.ITEM_BUCKET_EMPTY);
 	};
 
 	CopperCauldronBehavior FILL_WITH_POWDER_SNOW = (state, world, pos, player, hand, stack) -> {
 		return fillCauldron(world, pos, player, hand, stack,
-				(BlockState) ModBlocks.COPPER_POWDERED_CAULDRON_BLOCK.getDefaultState()
-						.with(CopperLeveledCauldronBlock.LEVEL, 3),
+				(BlockState) ModBlocks.COPPER_POWDERED_CAULDRON_BLOCK.getDefaultState().with(CopperLeveledCauldronBlock.LEVEL, 3),
 				SoundEvents.ITEM_BUCKET_EMPTY_POWDER_SNOW);
 	};
 
@@ -62,34 +60,29 @@ public interface CopperCauldronBehavior {
 	static void registerBehavior() {
 		EMPTY_COPPER_CAULDRON_BEHAVIOR.put(ModItems.PURIFIED_WATER_BUCKET, (state, world, pos, player, hand, stack) -> {
 			return fillCauldron(world, pos, player, hand, stack,
-					(BlockState) ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState()
-							.with(CopperLeveledCauldronBlock.LEVEL, 3),
+					(BlockState) ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState().with(CopperLeveledCauldronBlock.LEVEL, 3),
 					SoundEvents.ITEM_BUCKET_EMPTY);
 		});
 		EMPTY_COPPER_CAULDRON_BEHAVIOR.put(Items.POTION, (state, world, pos, player, hand, stack) -> {
 			if (PotionUtil.getPotion(stack) == ModItems.PURIFIED_WATER) {
 				if (!world.isClient()) {
 					Item item = stack.getItem();
-					player.setStackInHand(hand,
-							ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 					player.incrementStat(Stats.FILL_CAULDRON);
 					player.incrementStat(Stats.USED.getOrCreateStat(item));
 					world.setBlockState(pos, ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState());
-					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F,
-							1.0F);
+					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
 				}
 				return ActionResult.success(world.isClient());
 			} else if (PotionUtil.getPotion(stack) == Potions.WATER) {
 				if (!world.isClient()) {
 					Item item = stack.getItem();
-					player.setStackInHand(hand,
-							ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 					player.incrementStat(Stats.FILL_CAULDRON);
 					player.incrementStat(Stats.USED.getOrCreateStat(item));
 					world.setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState());
-					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F,
-							1.0F);
+					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
 				}
 				return ActionResult.success(world.isClient());
@@ -97,73 +90,65 @@ public interface CopperCauldronBehavior {
 				return ActionResult.PASS;
 		});
 		for (int i = 0; i < ModItems.FLASK_ITEM_LIST.size(); i++) {
-			EMPTY_COPPER_CAULDRON_BEHAVIOR.put(ModItems.FLASK_ITEM_LIST.get(i),
-					(state, world, pos, player, hand, stack) -> {
-						if (LeatherFlask.isFlaskEmpty(stack)) {
-							return ActionResult.PASS;
-						} else if (!world.isClient()) {
-							Item item = stack.getItem();
-							NbtCompound nbt;
-							if (stack.hasNbt()) {
-								nbt = stack.getNbt();
-								nbt.putInt(LeatherFlask.TAG_WATER, nbt.getInt(LeatherFlask.TAG_WATER) - 1);
-							} else {
-								nbt = new NbtCompound();
-								nbt.putInt(LeatherFlask.TAG_WATER, 1 + ((LeatherFlask) item).maxFillLevel);
-								nbt.putInt(LeatherFlask.TAG_WATER_KIND, 0);
+			EMPTY_COPPER_CAULDRON_BEHAVIOR.put(ModItems.FLASK_ITEM_LIST.get(i), (state, world, pos, player, hand, stack) -> {
+				if (LeatherFlaskItem.isFlaskEmpty(stack)) {
+					return ActionResult.PASS;
+				} else if (!world.isClient()) {
+					Item item = stack.getItem();
+					NbtCompound nbt;
+					if (stack.hasNbt()) {
+						nbt = stack.getNbt();
+						nbt.putInt(LeatherFlaskItem.TAG_WATER, nbt.getInt(LeatherFlaskItem.TAG_WATER) - 1);
+					} else {
+						nbt = new NbtCompound();
+						nbt.putInt(LeatherFlaskItem.TAG_WATER, 1 + ((LeatherFlaskItem) item).maxFillLevel);
+						nbt.putInt(LeatherFlaskItem.TAG_WATER_KIND, 0);
 
-							}
-							stack.setNbt(nbt);
-							if (nbt.getInt(LeatherFlask.TAG_WATER_KIND) == 0)
-								world.setBlockState(pos,
-										ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState());
-							else
-								world.setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState());
+					}
+					stack.setNbt(nbt);
+					if (nbt.getInt(LeatherFlaskItem.TAG_WATER_KIND) == 0)
+						world.setBlockState(pos, ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState());
+					else
+						world.setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState());
 
-							player.incrementStat(Stats.USE_CAULDRON);
-							player.incrementStat(Stats.USED.getOrCreateStat(item));
+					player.incrementStat(Stats.USE_CAULDRON);
+					player.incrementStat(Stats.USED.getOrCreateStat(item));
 
-							world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY,
-									SoundCategory.BLOCKS, 1.0F, 1.0F);
-							world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
-						}
-						return ActionResult.success(world.isClient());
+					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
+				}
+				return ActionResult.success(world.isClient());
 
-					});
+			});
 		}
 		registerBucketBehavior(EMPTY_COPPER_CAULDRON_BEHAVIOR);
 		WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.BUCKET, (state, world, pos, player, hand, stack) -> {
-			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET),
-					(statex) -> {
-						return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
-					}, SoundEvents.ITEM_BUCKET_FILL);
+			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), (statex) -> {
+				return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
+			}, SoundEvents.ITEM_BUCKET_FILL);
 		});
 		WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.GLASS_BOTTLE, (state, world, pos, player, hand, stack) -> {
 			if (!world.isClient()) {
 				Item item = stack.getItem();
-				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player,
-						PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.WATER)));
+				player.setStackInHand(hand,
+						ItemUsage.exchangeStack(stack, player, PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.WATER)));
 				player.incrementStat(Stats.USE_CAULDRON);
 				player.incrementStat(Stats.USED.getOrCreateStat(item));
 				CopperLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
-				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F,
-						1.0F);
+				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				world.emitGameEvent((Entity) null, GameEvent.FLUID_PICKUP, pos);
 			}
 
 			return ActionResult.success(world.isClient());
 		});
 		WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.POTION, (state, world, pos, player, hand, stack) -> {
-			if ((Integer) state.get(CopperLeveledCauldronBlock.LEVEL) != 3
-					&& PotionUtil.getPotion(stack) == Potions.WATER) {
+			if ((Integer) state.get(CopperLeveledCauldronBlock.LEVEL) != 3 && PotionUtil.getPotion(stack) == Potions.WATER) {
 				if (!world.isClient()) {
-					player.setStackInHand(hand,
-							ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 					player.incrementStat(Stats.USE_CAULDRON);
 					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 					world.setBlockState(pos, (BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
-					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F,
-							1.0F);
+					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
 				}
 
@@ -174,45 +159,39 @@ public interface CopperCauldronBehavior {
 		});
 		registerBucketBehavior(WATER_COPPER_CAULDRON_BEHAVIOR);
 		POWDER_SNOW_COPPER_CAULDRON_BEHAVIOR.put(Items.BUCKET, (state, world, pos, player, hand, stack) -> {
-			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET),
-					(statex) -> {
-						return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
-					}, SoundEvents.ITEM_BUCKET_FILL_POWDER_SNOW);
+			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(Items.POWDER_SNOW_BUCKET), (statex) -> {
+				return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
+			}, SoundEvents.ITEM_BUCKET_FILL_POWDER_SNOW);
 		});
 		registerBucketBehavior(POWDER_SNOW_COPPER_CAULDRON_BEHAVIOR);
 
 		PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.BUCKET, (state, world, pos, player, hand, stack) -> {
-			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(ModItems.PURIFIED_WATER_BUCKET),
-					(statex) -> {
-						return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
-					}, SoundEvents.ITEM_BUCKET_FILL);
+			return emptyCauldron(state, world, pos, player, hand, stack, new ItemStack(ModItems.PURIFIED_WATER_BUCKET), (statex) -> {
+				return (Integer) statex.get(CopperLeveledCauldronBlock.LEVEL) == 3;
+			}, SoundEvents.ITEM_BUCKET_FILL);
 		});
 		PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.GLASS_BOTTLE, (state, world, pos, player, hand, stack) -> {
 			if (!world.isClient()) {
 				Item item = stack.getItem();
-				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player,
-						PotionUtil.setPotion(new ItemStack(Items.POTION), ModItems.PURIFIED_WATER)));
+				player.setStackInHand(hand,
+						ItemUsage.exchangeStack(stack, player, PotionUtil.setPotion(new ItemStack(Items.POTION), ModItems.PURIFIED_WATER)));
 				player.incrementStat(Stats.USE_CAULDRON);
 				player.incrementStat(Stats.USED.getOrCreateStat(item));
 				CopperLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
-				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F,
-						1.0F);
+				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				world.emitGameEvent((Entity) null, GameEvent.FLUID_PICKUP, pos);
 			}
 
 			return ActionResult.success(world.isClient());
 		});
 		PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(Items.POTION, (state, world, pos, player, hand, stack) -> {
-			if ((Integer) state.get(CopperLeveledCauldronBlock.LEVEL) != 3
-					&& PotionUtil.getPotion(stack) == ModItems.PURIFIED_WATER) {
+			if ((Integer) state.get(CopperLeveledCauldronBlock.LEVEL) != 3 && PotionUtil.getPotion(stack) == ModItems.PURIFIED_WATER) {
 				if (!world.isClient()) {
-					player.setStackInHand(hand,
-							ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 					player.incrementStat(Stats.USE_CAULDRON);
 					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 					world.setBlockState(pos, (BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
-					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F,
-							1.0F);
+					world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
 				}
 
@@ -222,61 +201,55 @@ public interface CopperCauldronBehavior {
 			}
 		});
 		for (int i = 0; i < ModItems.FLASK_ITEM_LIST.size(); i++) {
-			PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(ModItems.FLASK_ITEM_LIST.get(i),
-					(state, world, pos, player, hand, stack) -> {
-						if (!world.isClient()) {
-							boolean playerIsSneaking = player.isSneaking();
-							Item item = stack.getItem();
+			PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR.put(ModItems.FLASK_ITEM_LIST.get(i), (state, world, pos, player, hand, stack) -> {
+				if (!world.isClient()) {
+					boolean playerIsSneaking = player.isSneaking();
+					Item item = stack.getItem();
 
-							NbtCompound nbt;
-							if (!stack.hasNbt()) {
-								nbt = new NbtCompound();
-								nbt.putInt(LeatherFlask.TAG_WATER, 2 + ((LeatherFlask) item).maxFillLevel);
-								nbt.putInt(LeatherFlask.TAG_WATER_KIND, 0);
+					NbtCompound nbt;
+					if (!stack.hasNbt()) {
+						nbt = new NbtCompound();
+						nbt.putInt(LeatherFlaskItem.TAG_WATER, 2 + ((LeatherFlaskItem) item).maxFillLevel);
+						nbt.putInt(LeatherFlaskItem.TAG_WATER_KIND, 0);
+					} else
+						nbt = stack.getNbt();
+					stack.setNbt(nbt);
+
+					// Fill cauldron
+					if (playerIsSneaking) {
+						if (!LeatherFlaskItem.isFlaskEmpty(stack))
+							if (!((CopperLeveledCauldronBlock) state.getBlock()).isFull(state)) {
+								nbt.putInt(LeatherFlaskItem.TAG_WATER, nbt.getInt(LeatherFlaskItem.TAG_WATER) - 1);
+								if (nbt.getInt(LeatherFlaskItem.TAG_WATER_KIND) == 0)
+									world.setBlockState(pos, (BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
+								else
+									world.setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState()
+											.with(CopperLeveledCauldronBlock.LEVEL, state.get(CopperLeveledCauldronBlock.LEVEL) + 1));
+								world.playSound((PlayerEntity) null, pos, ModSounds.EMPTY_FLASK_EVENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
 							} else
-								nbt = stack.getNbt();
-							stack.setNbt(nbt);
+								return ActionResult.CONSUME;
+					} else {
+						// Fill flask
+						if (!LeatherFlaskItem.isFlaskFull(stack)) {
+							nbt.putInt(LeatherFlaskItem.TAG_WATER, nbt.getInt(LeatherFlaskItem.TAG_WATER) + 1);
+							if (nbt.getInt(LeatherFlaskItem.TAG_WATER_KIND) != 0)
+								nbt.putInt(LeatherFlaskItem.TAG_WATER_KIND, 1);
 
-							// Fill cauldron
-							if (playerIsSneaking) {
-								if (!LeatherFlask.isFlaskEmpty(stack))
-									if (!((CopperLeveledCauldronBlock) state.getBlock()).isFull(state)) {
-										nbt.putInt(LeatherFlask.TAG_WATER, nbt.getInt(LeatherFlask.TAG_WATER) - 1);
-										if (nbt.getInt(LeatherFlask.TAG_WATER_KIND) == 0)
-											world.setBlockState(pos,
-													(BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
-										else
-											world.setBlockState(pos,
-													ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState().with(
-															CopperLeveledCauldronBlock.LEVEL,
-															state.get(CopperLeveledCauldronBlock.LEVEL) + 1));
-										world.playSound((PlayerEntity) null, pos, ModSounds.EMPTY_FLASK_EVENT,
-												SoundCategory.BLOCKS, 1.0F, 1.0F);
-										world.emitGameEvent((Entity) null, GameEvent.FLUID_PLACE, pos);
-									} else
-										return ActionResult.CONSUME;
-							} else {
-								// Fill flask
-								if (!LeatherFlask.isFlaskFull(stack)) {
-									nbt.putInt(LeatherFlask.TAG_WATER, nbt.getInt(LeatherFlask.TAG_WATER) + 1);
-									if (nbt.getInt(LeatherFlask.TAG_WATER_KIND) != 0)
-										nbt.putInt(LeatherFlask.TAG_WATER_KIND, 1);
+							CopperLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+							world.playSound((PlayerEntity) null, pos, ModSounds.FILL_FLASK_EVENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.emitGameEvent((Entity) null, GameEvent.FLUID_PICKUP, pos);
+						} else
+							return ActionResult.CONSUME;
 
-									CopperLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
-									world.playSound((PlayerEntity) null, pos, ModSounds.FILL_FLASK_EVENT,
-											SoundCategory.BLOCKS, 1.0F, 1.0F);
-									world.emitGameEvent((Entity) null, GameEvent.FLUID_PICKUP, pos);
-								} else
-									return ActionResult.CONSUME;
+					}
+					stack.setNbt(nbt);
+					player.incrementStat(Stats.USE_CAULDRON);
+					player.incrementStat(Stats.USED.getOrCreateStat(item));
+				}
 
-							}
-							stack.setNbt(nbt);
-							player.incrementStat(Stats.USE_CAULDRON);
-							player.incrementStat(Stats.USED.getOrCreateStat(item));
-						}
-
-						return ActionResult.success(world.isClient());
-					});
+				return ActionResult.success(world.isClient());
+			});
 		}
 		registerBucketBehavior(PURIFIED_WATER_COPPER_CAULDRON_BEHAVIOR);
 	}
@@ -286,9 +259,8 @@ public interface CopperCauldronBehavior {
 		behavior.put(Items.POWDER_SNOW_BUCKET, FILL_WITH_POWDER_SNOW);
 	}
 
-	static ActionResult emptyCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			ItemStack stack, ItemStack output, Predicate<BlockState> predicate,
-			SoundEvent soundEvent) {
+	static ActionResult emptyCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack stack,
+			ItemStack output, Predicate<BlockState> predicate, SoundEvent soundEvent) {
 		if (!predicate.test(state)) {
 			return ActionResult.PASS;
 		} else {
@@ -306,8 +278,8 @@ public interface CopperCauldronBehavior {
 		}
 	}
 
-	static ActionResult fillCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack stack,
-			BlockState state, SoundEvent soundEvent) {
+	static ActionResult fillCauldron(World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack stack, BlockState state,
+			SoundEvent soundEvent) {
 		if (!world.isClient()) {
 			Item item = stack.getItem();
 			player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));

@@ -1,6 +1,6 @@
 package net.dehydration.mod;
 
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -15,7 +15,7 @@ public class ModModelProvider {
 			ModelPredicateProviderRegistry.register(ModItems.FLASK_ITEM_LIST.get(i), new Identifier("empty"),
 					(stack, world, entity, seed) -> {
 						NbtCompound tags = stack.getNbt();
-						if (!stack.hasNbt() || (stack.hasNbt() && tags.getInt(LeatherFlask.TAG_WATER) != 0))
+						if (!stack.hasNbt() || (stack.hasNbt() && tags.getInt(LeatherFlaskItem.TAG_WATER) != 0))
 							return 0.0F;
 						else
 							return 1.0F;

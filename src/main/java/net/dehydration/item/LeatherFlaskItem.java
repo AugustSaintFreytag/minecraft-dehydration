@@ -54,13 +54,16 @@ import net.minecraft.world.event.GameEvent;
 
 // Thanks to Pois1x for the texture
 
-public class LeatherFlask extends Item {
+public class LeatherFlaskItem extends Item {
+
 	public static final String TAG_WATER = "leather_flask";
-	public static final String TAG_WATER_KIND = "purified_water"; // 0 = purified, 1 contaminated/mixed, 2 dirty
+
+	// 0 = purified, 1 = contaminated/mixed, 2 dirty
+	public static final String TAG_WATER_KIND = "purified_water";
 
 	public final int maxFillLevel;
 
-	public LeatherFlask(int water, Settings settings) {
+	public LeatherFlaskItem(int water, Settings settings) {
 		super(settings);
 		this.maxFillLevel = water;
 	}
@@ -74,8 +77,7 @@ public class LeatherFlask extends Item {
 		NbtCompound tags = itemStack.getNbt();
 
 		if (state.getBlock() instanceof LeveledCauldronBlock || state.getBlock() instanceof CauldronBlock
-				|| state.getBlock() instanceof CopperCauldronBlock
-				|| state.getBlock() instanceof CopperLeveledCauldronBlock
+				|| state.getBlock() instanceof CopperCauldronBlock || state.getBlock() instanceof CopperLeveledCauldronBlock
 				|| state.getBlock() instanceof CampfireCauldronBlock) {
 
 			// Empty flask
@@ -87,8 +89,7 @@ public class LeatherFlask extends Item {
 								if (((LeveledCauldronBlock) state.getBlock()).isFull(state)) {
 									return super.useOnBlock(context);
 								}
-								player.getWorld().setBlockState(pos,
-										(BlockState) state.cycle(LeveledCauldronBlock.LEVEL));
+								player.getWorld().setBlockState(pos, (BlockState) state.cycle(LeveledCauldronBlock.LEVEL));
 							} else {
 								player.getWorld().setBlockState(pos, Blocks.WATER_CAULDRON.getDefaultState());
 								player.getWorld().emitGameEvent(null, GameEvent.BLOCK_CHANGE, pos);
@@ -99,21 +100,16 @@ public class LeatherFlask extends Item {
 									return super.useOnBlock(context);
 								}
 								if (tags.getInt(TAG_WATER_KIND) != 0) {
-									player.getWorld().setBlockState(pos,
-											ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState().with(
-													CopperLeveledCauldronBlock.LEVEL,
-													state.get(CopperLeveledCauldronBlock.LEVEL) + 1));
+									player.getWorld().setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState()
+											.with(CopperLeveledCauldronBlock.LEVEL, state.get(CopperLeveledCauldronBlock.LEVEL) + 1));
 								} else {
-									player.getWorld().setBlockState(pos,
-											(BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
+									player.getWorld().setBlockState(pos, (BlockState) state.cycle(CopperLeveledCauldronBlock.LEVEL));
 								}
 							} else {
 								if (tags.getInt(TAG_WATER_KIND) == 0) {
-									player.getWorld().setBlockState(pos,
-											ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState());
+									player.getWorld().setBlockState(pos, ModBlocks.COPPER_PURIFIED_WATER_CAULDRON_BLOCK.getDefaultState());
 								} else {
-									player.getWorld().setBlockState(pos,
-											ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState());
+									player.getWorld().setBlockState(pos, ModBlocks.COPPER_WATER_CAULDRON_BLOCK.getDefaultState());
 								}
 								player.getWorld().emitGameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 							}
@@ -124,8 +120,8 @@ public class LeatherFlask extends Item {
 							player.getWorld().setBlockState(pos, (BlockState) state.cycle(CampfireCauldronBlock.LEVEL));
 						}
 
-						player.getWorld().playSound((PlayerEntity) null, pos, ModSounds.EMPTY_FLASK_EVENT,
-								SoundCategory.BLOCKS, 1.0F, 1.0F);
+						player.getWorld().playSound((PlayerEntity) null, pos, ModSounds.EMPTY_FLASK_EVENT, SoundCategory.BLOCKS, 1.0F,
+								1.0F);
 						player.incrementStat(Stats.USE_CAULDRON);
 
 						if (itemStack.hasNbt()) {
@@ -141,13 +137,12 @@ public class LeatherFlask extends Item {
 
 					return ActionResult.success(player.getWorld().isClient());
 				}
-			} else if (state.getBlock() instanceof LeveledCauldronBlock && state.get(LeveledCauldronBlock.LEVEL) > 0
-					&& itemStack.hasNbt() && tags.getInt(TAG_WATER) < 2 + this.maxFillLevel) {
+			} else if (state.getBlock() instanceof LeveledCauldronBlock && state.get(LeveledCauldronBlock.LEVEL) > 0 && itemStack.hasNbt()
+					&& tags.getInt(TAG_WATER) < 2 + this.maxFillLevel) {
 				// Fill up flask
 
 				if (!player.getWorld().isClient()) {
-					player.getWorld().playSound((PlayerEntity) null, pos, ModSounds.FILL_FLASK_EVENT,
-							SoundCategory.BLOCKS, 1.0F, 1.0F);
+					player.getWorld().playSound((PlayerEntity) null, pos, ModSounds.FILL_FLASK_EVENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					player.incrementStat(Stats.USE_CAULDRON);
 					LeveledCauldronBlock.decrementFluidLevel(state, player.getWorld(), pos);
 					tags.putInt(TAG_WATER, tags.getInt(TAG_WATER) + 1);
@@ -173,8 +168,8 @@ public class LeatherFlask extends Item {
 				&& world.getFluidState(blockPos).isIn(FluidTags.WATER) && itemStack.hasNbt()) {
 			if (user.isSneaking() && tags.getInt(TAG_WATER) != 0) {
 				tags.putInt(TAG_WATER, 0);
-				world.playSound(user, user.getX(), user.getY(), user.getZ(), ModSounds.EMPTY_FLASK_EVENT,
-						SoundCategory.NEUTRAL, 1.0F, 1.0F);
+				world.playSound(user, user.getX(), user.getY(), user.getZ(), ModSounds.EMPTY_FLASK_EVENT, SoundCategory.NEUTRAL, 1.0F,
+						1.0F);
 				return TypedActionResult.consume(itemStack);
 			}
 			if (tags.getInt(TAG_WATER) < 2 + maxFillLevel) {
@@ -203,8 +198,7 @@ public class LeatherFlask extends Item {
 					waterPurity = 0;
 				}
 
-				world.playSound(user, user.getX(), user.getY(), user.getZ(), ModSounds.FILL_FLASK_EVENT,
-						SoundCategory.NEUTRAL, 1.0F, 1.0F);
+				world.playSound(user, user.getX(), user.getY(), user.getZ(), ModSounds.FILL_FLASK_EVENT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
 				tags.putInt(TAG_WATER_KIND, waterPurity);
 				tags.putInt(TAG_WATER, fillLevel);
 				return TypedActionResult.consume(itemStack);
@@ -286,14 +280,12 @@ public class LeatherFlask extends Item {
 		}
 	}
 
-	@Override
-	@Environment(EnvType.CLIENT)
+	@Override @Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		NbtCompound tags = stack.getNbt();
 
 		if (tags != null) {
-			tooltip.add(Text
-					.translatable("item.dehydration.leather_flask.tooltip", tags.getInt(TAG_WATER), maxFillLevel + 2)
+			tooltip.add(Text.translatable("item.dehydration.leather_flask.rations.tooltip", tags.getInt(TAG_WATER), maxFillLevel + 2)
 					.formatted(Formatting.GRAY));
 
 			if (ModConfig.CONFIG.renderHydrationValueInItemTooltip && tags.getInt(TAG_WATER) > 0) {
@@ -305,11 +297,11 @@ public class LeatherFlask extends Item {
 					string = "purified";
 				}
 
-				tooltip.add(Text.translatable("item.dehydration.leather_flask.tooltip3." + string));
+				tooltip.add(Text.translatable("item.dehydration.leather_flask.rations.tooltip3." + string));
+			} else {
+				tooltip.add(
+						Text.translatable("item.dehydration.leather_flask.capacity.tooltip", maxFillLevel + 2).formatted(Formatting.GRAY));
 			}
-		} else {
-			tooltip.add(Text.translatable("item.dehydration.leather_flask.tooltip2", maxFillLevel + 2)
-					.formatted(Formatting.GRAY));
 		}
 
 		super.appendTooltip(stack, world, tooltip, context);
@@ -325,8 +317,7 @@ public class LeatherFlask extends Item {
 				return Optional.of(new ThirstTooltipData(stack.getNbt().getInt(TAG_WATER_KIND),
 						stack.getNbt().getInt(TAG_WATER) * ModConfig.CONFIG.flaskHydrationValue));
 			}
-			return Optional
-					.of(new ThirstTooltipData(0, (2 + this.maxFillLevel) * ModConfig.CONFIG.flaskHydrationValue));
+			return Optional.of(new ThirstTooltipData(0, (2 + this.maxFillLevel) * ModConfig.CONFIG.flaskHydrationValue));
 		}
 
 		return super.getTooltipData(stack);
@@ -346,7 +337,7 @@ public class LeatherFlask extends Item {
 		}
 
 		int hydrationValue = nbt.getInt(TAG_WATER) + quench;
-		int addition = ((LeatherFlask) itemStack.getItem()).maxFillLevel;
+		int addition = ((LeatherFlaskItem) itemStack.getItem()).maxFillLevel;
 
 		nbt.putInt(TAG_WATER, hydrationValue > 2 + addition ? 2 + addition : hydrationValue);
 		itemStack.setNbt(nbt);
@@ -363,7 +354,7 @@ public class LeatherFlask extends Item {
 			return super.getItemBarStep(stack);
 		}
 
-		var item = (LeatherFlask) stack.getItem();
+		var item = (LeatherFlaskItem) stack.getItem();
 
 		var maxFillLevel = item.maxFillLevel + 2;
 		var fillLevel = stack.getNbt().getInt(TAG_WATER);
@@ -413,21 +404,21 @@ public class LeatherFlask extends Item {
 		var fillKind = stack.getNbt().getInt(TAG_WATER_KIND);
 
 		switch (fillKind) {
-			case 0:
-				// Purified Water
-				return Color.ofRGB(83, 237, 245).getColor();
-			case 1:
-				// Contaminated Water
-				return Color.ofRGB(255, 221, 158).getColor();
-			case 2:
-			default:
-				// Dirty Water
-				return Color.ofRGB(255, 191, 150).getColor();
+		case 0:
+			// Purified Water
+			return Color.ofRGB(83, 237, 245).getColor();
+		case 1:
+			// Contaminated Water
+			return Color.ofRGB(255, 221, 158).getColor();
+		case 2:
+		default:
+			// Dirty Water
+			return Color.ofRGB(255, 191, 150).getColor();
 		}
 	}
 
 	public static int getMaxFlaskFillLevel(ItemStack stack) {
-		var item = (LeatherFlask) stack.getItem();
+		var item = (LeatherFlaskItem) stack.getItem();
 		var maxFillLevel = item.maxFillLevel + 2;
 
 		return maxFillLevel;

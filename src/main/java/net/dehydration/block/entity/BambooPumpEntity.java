@@ -1,6 +1,6 @@
 package net.dehydration.block.entity;
 
-import net.dehydration.item.LeatherFlask;
+import net.dehydration.item.LeatherFlaskItem;
 import net.dehydration.mod.ModBlocks;
 import net.dehydration.mod.ModConfig;
 import net.dehydration.mod.ModItems;
@@ -82,9 +82,9 @@ public class BambooPumpEntity extends BlockEntity implements Inventory {
 					setStack(0, PotionUtil.setPotion(new ItemStack(Items.POTION), ModItems.PURIFIED_WATER));
 				pumpCount = 0;
 				cooldown = ModConfig.CONFIG.pumpCooldown;
-			} else if (itemStack.getItem() instanceof LeatherFlask) {
+			} else if (itemStack.getItem() instanceof LeatherFlaskItem) {
 				if (!this.world.isClient()) {
-					LeatherFlask.fillFlask(itemStack, 2);
+					LeatherFlaskItem.fillFlask(itemStack, 2);
 					setStack(0, itemStack);
 				}
 				pumpCount = 0;
