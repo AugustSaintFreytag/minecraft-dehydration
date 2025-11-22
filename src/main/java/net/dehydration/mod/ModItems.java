@@ -8,6 +8,7 @@ import java.util.Map;
 import net.dehydration.item.HandbookItem;
 import net.dehydration.item.LeatherFlask;
 import net.dehydration.item.PurifiedWaterBucket;
+import net.dehydration.item.PurifiedWaterBottleItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -62,6 +63,8 @@ public class ModItems {
 	// Handbook
 
 	public static final Item HANDBOOK = register("handbook", new HandbookItem(new Item.Settings()));
+	public static final Item PURIFIED_WATER_BOTTLE = register("purified_water_bottle",
+			new PurifiedWaterBottleItem(new Item.Settings().maxCount(4)));
 
 	// Bucket
 

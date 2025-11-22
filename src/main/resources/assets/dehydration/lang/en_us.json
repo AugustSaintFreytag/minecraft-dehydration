@@ -114,4 +114,5 @@
   "block.dehydration.bamboo_pump.no_water": "No water in pumping reach",
 
   "commands.dehydration.changed": "updated thirst"
+	"item.dehydration.purified_water_bottle": "Purified Water Bottle",
 }
