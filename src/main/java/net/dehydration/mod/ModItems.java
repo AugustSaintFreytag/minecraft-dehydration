@@ -55,9 +55,6 @@ public class ModItems {
 
 	public static final Potion PURIFIED_WATER = new Potion(new StatusEffectInstance[0]);
 
-	// Handbook
-
-	public static final Item HANDBOOK = register("handbook", new HandbookItem(new Item.Settings()));
 	public static final Item PURIFIED_WATER_BOTTLE = register("purified_water_bottle",
 			new PurifiedWaterBottleItem(new Item.Settings().maxCount(4)));
 
