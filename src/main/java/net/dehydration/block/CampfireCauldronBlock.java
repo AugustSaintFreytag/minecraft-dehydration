@@ -119,7 +119,7 @@ public class CampfireCauldronBlock extends Block implements BlockEntityProvider 
 			if (level == MAX_LEVEL && !world.isClient()) {
 				if (!player.isCreative()) {
 					itemStack.decrement(1);
-					PlayerInventoryUtil.giveItemStackToPlayer(player, new ItemStack(Items.WATER_BUCKET));
+					PlayerInventoryUtil.giveItemStackToPlayer(player, new ItemStack(ModItems.PURIFIED_WATER_BUCKET));
 				}
 
 				this.setLevel(world, pos, state, 0);
@@ -150,13 +150,14 @@ public class CampfireCauldronBlock extends Block implements BlockEntityProvider 
 		}
 
 		// Water Bucket
-		if (item == Items.WATER_BUCKET) {
+		if (item == Items.WATER_BUCKET || item == ModItems.PURIFIED_WATER_BUCKET) {
 			if (level < MAX_LEVEL && !world.isClient()) {
 				if (!player.isCreative()) {
 					player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 				}
 
-				campfireCauldronEntity.onFillingCauldron();
+				var isPurified = (item == ModItems.PURIFIED_WATER_BUCKET);
+				campfireCauldronEntity.onFillingCauldron(isPurified);
 				this.setLevel(world, pos, state, MAX_LEVEL);
 				world.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
@@ -187,8 +188,8 @@ public class CampfireCauldronBlock extends Block implements BlockEntityProvider 
 			return ActionResult.success(world.isClient());
 		}
 
-		if (level > 0 && item instanceof LeatherFlaskItem) {
 			NbtCompound tags = itemStack.getNbt();
+		if (item instanceof LeatherFlaskItem && level > 0) {
 			if (tags != null && tags.getInt(LeatherFlaskItem.TAG_WATER) < 2 + ((LeatherFlaskItem) item).maxFillLevel) {
 				if (this.isPurifiedWater(world, pos)) {
 					if ((tags.getInt(LeatherFlaskItem.TAG_WATER_KIND) == 0 || tags.getInt(LeatherFlaskItem.TAG_WATER) == 0)) {

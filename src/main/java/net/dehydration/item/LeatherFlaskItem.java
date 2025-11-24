@@ -137,8 +137,9 @@ public class LeatherFlaskItem extends Item {
 
 					return ActionResult.success(player.getWorld().isClient());
 				}
-			} else if (state.getBlock() instanceof LeveledCauldronBlock && state.get(LeveledCauldronBlock.LEVEL) > 0 && itemStack.hasNbt()
-					&& tags.getInt(TAG_WATER) < 2 + this.maxFillLevel) {
+			} else if (state.getBlock() instanceof LeveledCauldronBlock && state.get(LeveledCauldronBlock.LEVEL) > 0
+					&& (!itemStack.hasNbt()
+							|| tags.getInt(TAG_WATER) < 2 + this.maxFillLevel)) {
 				// Fill up flask
 
 				if (!player.getWorld().isClient()) {
