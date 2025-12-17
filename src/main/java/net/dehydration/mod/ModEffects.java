@@ -14,8 +14,8 @@ public class ModEffects {
 	public final static StatusEffect HYDRATION = new HydrationEffect(StatusEffectCategory.BENEFICIAL, 3062757);
 
 	public static void init() {
-		Registry.register(Registries.STATUS_EFFECT, new Identifier("dehydration", "thirst_effect"), THIRST);
-		Registry.register(Registries.STATUS_EFFECT, new Identifier("dehydration", "hydration_effect"), HYDRATION);
+		Registry.register(Registries.STATUS_EFFECT, new Identifier("dehydration", "thirst"), THIRST);
+		Registry.register(Registries.STATUS_EFFECT, new Identifier("dehydration", "hydration"), HYDRATION);
 	}
 
 }

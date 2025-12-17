@@ -38,6 +38,7 @@ import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -230,6 +231,11 @@ public class LeatherFlaskItem extends Item {
 		}
 
 		player.incrementStat(Stats.USED.getOrCreateStat(this));
+
+		if (player instanceof ServerPlayerEntity serverPlayer) {
+			serverPlayer.getWorld().playSound(null, serverPlayer.getBlockPos(), SoundEvents.ENTITY_WANDERING_TRADER_DRINK_POTION,
+					SoundCategory.PLAYERS, 1.0F, 1.0F);
+		}
 
 		if (player.isCreative() || player.isSpectator()) {
 			return stack;

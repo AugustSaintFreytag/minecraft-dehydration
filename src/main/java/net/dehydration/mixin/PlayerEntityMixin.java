@@ -52,9 +52,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Hydratio
 	@Inject(method = "Lnet/minecraft/entity/player/PlayerEntity;tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;updateItems()V", shift = Shift.BEFORE))
 	private void tickMovementMixin(CallbackInfo info) {
 		if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL
-				&& this.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION) && this.hydrationManager.hasThirst()) {
+				&& this.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)
+				&& this.hydrationManager.hasThirst()) {
 			PlayerEntity player = (PlayerEntity) (Object) this;
+
 			this.hydrationManager.update(player);
+
 			if (this.hydrationManager.isNotFull() && this.age % 10 == 0) {
 				this.hydrationManager.setHydrationLevel(this.hydrationManager.getHydrationLevel() + 1);
 			}
@@ -83,13 +86,21 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Hydratio
 
 	@Inject(method = "Lnet/minecraft/entity/player/PlayerEntity;wakeUp(ZZ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;sleepTimer:I"))
 	private void wakeUpMixin(boolean bl, boolean updateSleepingPlayers, CallbackInfo info) {
-		if (!this.getWorld().isClient() && this.hydrationManager.hasThirst() && this.sleepTimer >= 100) {
-			int thirstLevel = this.hydrationManager.getHydrationLevel();
-			int hungerLevel = this.hungerManager.getFoodLevel();
-			int thirstConsumption = ModConfig.CONFIG.dehydrationAfterSleeping;
-			int hungerConsumption = ModConfig.CONFIG.hungerWhenSleeping;
+		if (this.getWorld().isClient()) {
+			return;
+		}
 
-			this.hydrationManager.setHydrationLevel(thirstLevel >= thirstConsumption ? thirstLevel - thirstConsumption : 0);
+		var thirstConsumption = ModConfig.CONFIG.dehydrationAfterSleeping;
+		var hungerConsumption = ModConfig.CONFIG.hungerWhenSleeping;
+
+		if (this.hydrationManager.hasThirst() && thirstConsumption > 0) {
+			var thirstLevel = this.hydrationManager.getHydrationLevel();
+			this.hydrationManager
+					.setHydrationLevel(thirstLevel >= thirstConsumption ? thirstLevel - thirstConsumption : 0);
+		}
+
+		if (hungerConsumption > 0) {
+			var hungerLevel = this.hungerManager.getFoodLevel();
 			this.hungerManager.setFoodLevel(hungerLevel >= hungerConsumption ? hungerLevel - hungerConsumption : 0);
 		}
 	}

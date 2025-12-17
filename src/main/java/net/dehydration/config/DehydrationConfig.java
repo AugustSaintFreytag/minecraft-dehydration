@@ -5,7 +5,8 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(name = "dehydration") @Config.Gui.Background("minecraft:textures/block/stone.png")
+@Config(name = "dehydration")
+@Config.Gui.Background("minecraft:textures/block/stone.png")
 public class DehydrationConfig implements ConfigData {
 
 	// Player
@@ -39,7 +40,7 @@ public class DehydrationConfig implements ConfigData {
 
 	@ConfigEntry.Category("effect_settings")
 	@Comment("Defines the intensity of a default applied thirst effect (e.g. from contaminated water). Smaller value = less drain.")
-	public float thirstEffectAmplitude = 0.1F;
+	public float thirstEffectAmplitude = 1.0F;
 
 	@ConfigEntry.Category("effect_settings")
 	@Comment("Defines the duration of a default applied thirst effect (e.g. from contaminated water) in ticks. 20 ticks = 1 second.")
@@ -106,11 +107,11 @@ public class DehydrationConfig implements ConfigData {
 
 	@ConfigEntry.Category("sleep_settings")
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 20)
-	public int dehydrationAfterSleeping = 4;
+	public int dehydrationAfterSleeping = 0;
 
 	@ConfigEntry.Category("sleep_settings")
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 20)
-	public int hungerWhenSleeping = 2;
+	public int hungerWhenSleeping = 0;
 
 	// Production
 

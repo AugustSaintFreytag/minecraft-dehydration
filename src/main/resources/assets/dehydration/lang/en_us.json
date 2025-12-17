@@ -1,8 +1,8 @@
 {
 	"death.attack.dehydration": "%1$s died of thirst",
 	"death.attack.thirst": "%1$s died of thirst",
-	"effect.dehydration.thirst_effect": "Thirst",
-	"effect.dehydration.hydration_effect": "Hydration",
+	"effect.dehydration.thirst": "Thirst",
+	"effect.dehydration.hydration": "Hydration",
 	"text.autoconfig.dehydration.title": "Dehydration",
 	"text.autoconfig.dehydration.category.player_settings": "Player Settings",
 	"text.autoconfig.dehydration.option.dehydrationExhaustionRate": "Dehydration Exhaustion Rate",
