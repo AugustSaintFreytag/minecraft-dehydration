@@ -106,11 +106,11 @@ public class DehydrationConfig implements ConfigData {
 
 	@ConfigEntry.Category("sleep_settings")
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 20)
-	public int dehydrationAfterSleeping = 4;
+	public int dehydrationAfterSleeping = 0;
 
 	@ConfigEntry.Category("sleep_settings")
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 20)
-	public int hungerWhenSleeping = 2;
+	public int hungerWhenSleeping = 0;
 
 	// Production
 
